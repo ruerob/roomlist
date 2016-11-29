@@ -1,6 +1,6 @@
 {
-    "name": "Conference Room Announcement",
-    "author": "fw@dividuum.de",
-    "desc": "Show information about upcoming talks",
-    "repository": "https://github.com/info-beamer/package-conference-room"
+    "name": "HD Image/Video Player",
+    "author": "Florian Wesch <fw@dividuum.de>",
+    "desc": "Displays images and videos in a rotation",
+    "repository": "https://github.com/info-beamer/package-hd-player"
 }

@@ -1,410 +1,530 @@
-gl.setup(1280, 720)
-
-sys.set_flag("slow_gc")
+gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
 
 local json = require "json"
-local schedule
-local current_room
 
-util.resource_loader{
-    "progress.frag",
+local shaders = {
+    multisample = resource.create_shader[[
+        uniform sampler2D Texture;
+        varying vec2 TexCoord;
+        uniform vec4 Color;
+        uniform float x, y, s;
+        void main() {
+            vec2 texcoord = TexCoord * vec2(s, s) + vec2(x, y);
+            vec4 c1 = texture2D(Texture, texcoord);
+            vec4 c2 = texture2D(Texture, texcoord + vec2(0.0002, 0.0002));
+            gl_FragColor = (c2+c1)*0.5 * Color;
+        }
+    ]], 
+    simple = resource.create_shader[[
+        uniform sampler2D Texture;
+        varying vec2 TexCoord;
+        uniform vec4 Color;
+        uniform float x, y, s;
+        void main() {
+            gl_FragColor = texture2D(Texture, TexCoord * vec2(s, s) + vec2(x, y)) * Color;
+        }
+    ]], 
+    progress = resource.create_shader[[
+        uniform sampler2D Texture;
+        varying vec2 TexCoord;
+        uniform float progress_angle;
+
+        float interp(float x) {
+            return 2.0 * x * x * x - 3.0 * x * x + 1.0;
+        }
+
+        void main() {
+            vec2 pos = TexCoord;
+            float angle = atan(pos.x - 0.5, pos.y - 0.5);
+            float dist = clamp(distance(pos, vec2(0.5, 0.5)), 0.0, 0.5) * 2.0;
+            float alpha = interp(pow(dist, 8.0));
+            if (angle > progress_angle) {
+                gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
+            } else {
+                gl_FragColor = vec4(0.5, 0.5, 0.5, alpha);
+            }
+        }
+    ]]
 }
 
-local white = resource.create_colored_texture(1,1,1)
-
-util.file_watch("schedule.json", function(content)
-    print("reloading schedule")
-    schedule = json.decode(content)
-end)
-
-local rooms
-local spacer = white
-
-node.event("config_update", function(config)
-    rooms = {}
-    for idx, room in ipairs(config.rooms) do
-        if room.serial == sys.get_env("SERIAL") then
-            print("found my room")
-            current_room = room
-        end
-        rooms[room.name] = room
-    end
-    spacer = resource.create_colored_texture(CONFIG.foreground_color.rgba())
-end)
-
-hosted_init()
-
-local base_time = N.base_time or 0
-local current_talk
-local all_talks = {}
-local day = 0
-
-function get_now()
-    return base_time + sys.now()
-end
-
-function check_next_talk()
-    local now = get_now()
-    local room_next = {}
-    for idx, talk in ipairs(schedule) do
-        if rooms[talk.place] and not room_next[talk.place] and talk.start_unix + 25 * 60 > now then 
-            room_next[talk.place] = talk
-        end
-    end
-
-    for room, talk in pairs(room_next) do
-        talk.slide_lines = wrap(talk.title, 30)
-
-        if #talk.title > 25 then
-            talk.lines = wrap(talk.title, 60)
-            if #talk.lines == 1 then
-                talk.lines[2] = table.concat(talk.speakers, ", ")
-            end
-        end
-    end
-
-    if room_next[current_room.name] then
-        current_talk = room_next[current_room.name]
-    else
-        current_talk = nil
-    end
-
-    all_talks = {}
-    for room, talk in pairs(room_next) do
-        if current_talk and room ~= current_talk.place then
-            all_talks[#all_talks + 1] = talk
-        end
-    end
-    table.sort(all_talks, function(a, b) 
-        if a.start_unix < b.start_unix then
-            return true
-        elseif a.start_unix > b.start_unix then
-            return false
-        else
-            return a.place < b.place
-        end
-    end)
-end
-
-function wrap(str, limit, indent, indent1)
-    limit = limit or 72
-    local here = 1
-    local wrapped = str:gsub("(%s+)()(%S+)()", function(sp, st, word, fi)
-        if fi-here > limit then
-            here = st
-            return "\n"..word
-        end
-    end)
-    local splitted = {}
-    for token in string.gmatch(wrapped, "[^\n]+") do
-        splitted[#splitted + 1] = token
-    end
-    return splitted
-end
-
-local clock = (function()
-    local base_time = N.base_time or 0
-
-    local function set(time)
-        base_time = tonumber(time) - sys.now()
-    end
-
-    util.data_mapper{
-        ["clock/midnight"] = function(since_midnight)
-            print("NEW midnight", since_midnight)
-            set(since_midnight)
-        end;
+local settings = {
+    IMAGE_PRELOAD = 2;
+    VIDEO_PRELOAD = 2;
+    PRELOAD_TIME = 5;
+    FALLBACK_PLAYLIST = {
+        {
+            index = 1;
+            offset = 0;
+            total_duration = 1;
+            duration = 1;
+            asset_name = "blank.png";
+            type = "image";
+        }
     }
+}
 
-    local function get()
-        local time = (base_time + sys.now()) % 86400
-        return string.format("%d:%02d", math.floor(time / 3600), math.floor(time % 3600 / 60))
+local white = resource.create_colored_texture(1,1,1,1)
+local black = resource.create_colored_texture(0,0,0,1)
+local font = resource.load_font "roboto.ttf"
+
+local function ramp(t_s, t_e, t_c, ramp_time)
+    if ramp_time == 0 then return 1 end
+    local delta_s = t_c - t_s
+    local delta_e = t_e - t_c
+    return math.min(1, delta_s * 1/ramp_time, delta_e * 1/ramp_time)
+end
+
+local function cycled(items, offset)
+    offset = offset % #items + 1
+    return items[offset], offset
+end
+
+local Loading = (function()
+    local loading = "Loading..."
+    local size = 80
+    local w = font:width(loading, size)
+    local alpha = 0
+    
+    local function draw()
+        if alpha == 0 then
+            return
+        end
+        font:write((WIDTH-w)/2, (HEIGHT-size)/2, loading, size, 1,1,1,alpha)
+    end
+
+    local function fade_in()
+        alpha = math.min(1, alpha + 0.01)
+    end
+
+    local function fade_out()
+        alpha = math.max(0, alpha - 0.01)
     end
 
     return {
-        get = get;
-        set = set;
+        fade_in = fade_in;
+        fade_out = fade_out;
+        draw = draw;
     }
 end)()
 
-util.data_mapper{
-    ["clock/set"] = function(time)
-        base_time = tonumber(time) - sys.now()
-        N.base_time = base_time
-        check_next_talk()
-        print("UPDATED TIME", base_time)
-    end;
-    ["clock/day"] = function(new_day)
-        day = new_day
-        print("UPDATED DAY", new_day)
-    end;
-}
+local Config = (function()
+    local playlist = {}
+    local switch_time = 1
+    local synced = false
+    local kenburns = false
+    local audio = false
+    local portrait = false
+    local rotation = 0
+    local transform = function() end
 
-function switcher(get_screens)
-    local current_idx = 0
-    local current
-    local current_state
+    util.file_watch("config.json", function(raw)
+        print "updated config.json"
+        local config = json.decode(raw)
 
-    local switch = sys.now()
-    local switched = sys.now()
+        synced = config.synced
+        kenburns = config.kenburns
+        audio = config.audio
+        progress = config.progress
 
-    local blend = 0.8
-    local mode = "switch"
+        rotation = config.rotation
+        portrait = rotation == 90 or rotation == 270
+        gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
+        transform = util.screen_transform(rotation)
+        print("screen size is " .. WIDTH .. "x" .. HEIGHT)
 
-    local old_screen
-    local current_screen
-    
-    local screens = get_screens()
-
-    local function prepare()
-        local now = sys.now()
-        if now > switch and mode == "show" then
-            mode = "switch"
-            switched = now
-
-            -- snapshot old screen
-            gl.clear(CONFIG.background_color.rgb_with_a(0.0))
-            if current then
-                current.draw(current_state)
+        if #config.playlist == 0 then
+            playlist = settings.FALLBACK_PLAYLIST
+            switch_time = 0
+            kenburns = false
+        else
+            playlist = {}
+            local total_duration = 0
+            for idx = 1, #config.playlist do
+                local item = config.playlist[idx]
+                total_duration = total_duration + item.duration
             end
-            old_screen = resource.create_snapshot()
 
-            -- find next screen
-            current_idx = current_idx + 1
-            if current_idx > #screens then
-                screens = get_screens()
-                current_idx = 1
+            local offset = 0
+            for idx = 1, #config.playlist do
+                local item = config.playlist[idx]
+                if item.duration > 0 then
+                    playlist[#playlist+1] = {
+                        index = idx,
+                        offset = offset,
+                        total_duration = total_duration,
+                        duration = item.duration,
+                        asset_name = item.file.asset_name,
+                        type = item.file.type,
+                    }
+                    offset = offset + item.duration
+                end
             end
-            current = screens[current_idx]
-            switch = now + current.time
-            current_state = current.prepare()
-
-            -- snapshot next screen
-            gl.clear(CONFIG.background_color.rgb_with_a(0.0))
-            current.draw(current_state)
-            current_screen = resource.create_snapshot()
-        elseif now - switched > blend and mode == "switch" then
-            if current_screen then
-                current_screen:dispose()
-            end
-            if old_screen then
-                old_screen:dispose()
-            end
-            current_screen = nil
-            old_screen = nil
-            mode = "show"
+            switch_time = config.switch_time
         end
-    end
-    
-    local function draw()
-        local now = sys.now()
+    end)
 
-        local percent = ((now - switched) / (switch - switched)) * 3.14129 * 2 - 3.14129
-        progress:use{percent = percent}
-        white:draw(WIDTH-50, HEIGHT-50, WIDTH-10, HEIGHT-10)
-        progress:deactivate()
-
-        if mode == "switch" then
-            local progress = (now - switched) / blend
-            gl.pushMatrix()
-            gl.translate(WIDTH/2, 0)
-            if progress < 0.5 then
-                gl.rotate(180 * progress, 0, 1, 0)
-                gl.translate(-WIDTH/2, 0)
-                old_screen:draw(0, 0, WIDTH, HEIGHT)
-            else
-                gl.rotate(180 + 180 * progress, 0, 1, 0)
-                gl.translate(-WIDTH/2, 0)
-                current_screen:draw(0, 0, WIDTH, HEIGHT)
-            end
-            gl.popMatrix()
-        else 
-            current.draw(current_state)
-        end
-    end
     return {
-        prepare = prepare;
-        draw = draw;
+        get_playlist = function() return playlist end;
+        get_switch_time = function() return switch_time end;
+        get_synced = function() return synced end;
+        get_kenburns = function() return kenburns end;
+        get_audio = function() return audio end;
+        get_progress = function() return progress end;
+        get_rotation = function() return rotation, portrait end;
+        apply_transform = function() return transform() end;
     }
-end
+end)()
 
-local content = switcher(function() 
-    return {{
-        time = CONFIG.other_rooms,
-        prepare = function()
-            local content = {}
+local Scheduler = (function()
+    local playlist_offset = 0
 
-            local function add_content(func)
-                content[#content+1] = func
-            end
+    local function get_next()
+        local playlist = Config.get_playlist()
+        local item
+        item, playlist_offset = cycled(playlist, playlist_offset)
+        print(string.format("next scheduled item is %s [%f]", item.asset_name, item.duration))
+        return item
+    end
 
-            local function mk_spacer(y)
-                return function()
-                    spacer:draw(0, y, WIDTH, y+2, 0.6)
-                end
-            end
+    return {
+        get_next = get_next;
+    }
+end)()
 
-            local function mk_talkmulti(y, talk, is_running)
-                local alpha
-                if is_running then
-                    alpha = 0.5
-                else
-                    alpha = 1.0
-                end
-
-                local line_idx = 999999
-                local top_line
-                local bottom_line
-                local function next_line()
-                    line_idx = line_idx + 1
-                    if line_idx > #talk.lines then
-                        line_idx = 2
-                        top_line = talk.lines[1]
-                        bottom_line = talk.lines[2] or ""
-                    else
-                        top_line = bottom_line
-                        bottom_line = talk.lines[line_idx]
-                    end
-                end
-
-                next_line()
-
-                local switch = sys.now() + 3
-
-                return function()
-                    CONFIG.font:write(30, y, talk.start_str, 50, CONFIG.foreground_color.rgb_with_a(alpha))
-                    CONFIG.font:write(190, y, rooms[talk.place].name_short, 50, CONFIG.foreground_color.rgb_with_a(alpha))
-                    CONFIG.font:write(400, y, top_line, 30, CONFIG.foreground_color.rgb_with_a(alpha))
-                    CONFIG.font:write(400, y+28, bottom_line, 30, CONFIG.foreground_color.rgb_with_a(alpha*0.6))
-
-                    if sys.now() > switch then
-                        next_line()
-                        switch = sys.now() + 1
-                    end
-                end
-            end
-
-            local function mk_talk(y, talk, is_running)
-                local alpha
-                if is_running then
-                    alpha = 0.5
-                else
-                    alpha = 1.0
-                end
-
-                return function()
-                    CONFIG.font:write(30, y, talk.start_str, 50, CONFIG.foreground_color.rgb_with_a(alpha))
-                    CONFIG.font:write(190, y, rooms[talk.place].name_short, 50, CONFIG.foreground_color.rgb_with_a(alpha))
-                    CONFIG.font:write(400, y, talk.title, 50, CONFIG.foreground_color.rgb_with_a(alpha))
-                end
-            end
-
-            local y = 300
-            local time_sep = false
-            if #all_talks > 0 then
-                for idx, talk in ipairs(all_talks) do
-                    if not time_sep and talk.start_unix > get_now() then
-                        if idx > 1 then
-                            y = y + 5
-                            add_content(mk_spacer(y))
-                            y = y + 20
-                        end
-                        time_sep = true
-                    end
-                    if talk.lines then
-                        add_content(mk_talkmulti(y, talk, not time_sep))
-                    else
-                        add_content(mk_talk(y, talk, not time_sep))
-                    end
-                    y = y + 62
-                end
-            else
-                CONFIG.font:write(400, 330, "No other talks.", 50, CONFIG.foreground_color.rgba())
-            end
-
-            return content
-        end;
-        draw = function(content)
-            CONFIG.font:write(400, 180, "Other talks", 80, CONFIG.foreground_color.rgba())
-            spacer:draw(0, 280, WIDTH, 282, 0.6)
-            for _, func in ipairs(content) do
-                func()
-            end
-        end
-    }, {
-        time = CONFIG.current_room,
-        prepare = function()
-        end;
-        draw = function()
-            if not current_talk then
-                CONFIG.font:write(400, 180, "Next talk", 80, CONFIG.foreground_color.rgba())
-                spacer:draw(0, 300, WIDTH, 302, 0.6)
-                CONFIG.font:write(400, 310, "Nope. That's it.", 50, CONFIG.foreground_color.rgba())
-            else
-                local delta = current_talk.start_unix - get_now()
-                if delta > 0 then
-                    CONFIG.font:write(400, 180, "Next talk", 80, CONFIG.foreground_color.rgba())
-                else
-                    CONFIG.font:write(400, 180, "This talk", 80, CONFIG.foreground_color.rgba())
-                end
-                spacer:draw(0, 280, WIDTH, 282, 0.6)
-
-                CONFIG.font:write(130, 310, current_talk.start_str, 50, CONFIG.foreground_color.rgba())
-                if delta > 180*60 then
-                    CONFIG.font:write(130, 310 + 60, string.format("in %d h", math.floor(delta/3660)+1), 50, CONFIG.foreground_color.rgb_with_a(0.6))
-                elseif delta > 0 then
-                    CONFIG.font:write(130, 310 + 60, string.format("in %d min", math.floor(delta/60)+1), 50, CONFIG.foreground_color.rgb_with_a(0.6))
-                end
-                for idx, line in ipairs(current_talk.slide_lines) do
-                    if idx >= 5 then
-                        break
-                    end
-                    CONFIG.font:write(400, 310 - 60 + 60 * idx, line, 50, CONFIG.foreground_color.rgba())
-                end
-                for i, speaker in ipairs(current_talk.speakers) do
-                    CONFIG.font:write(400, 490 + 50 * i, speaker, 50, CONFIG.foreground_color.rgb_with_a(0.6))
-                end
-            end
-        end
-    }, {
-        time = CONFIG.room_info,
-        prepare = function()
-        end;
-        draw = function(t)
-            CONFIG.font:write(400, 180, "Room information", 80, CONFIG.foreground_color.rgba())
-            spacer:draw(0, 280, WIDTH, 282, 0.6)
-            CONFIG.font:write(30, 300, "Audio", 50, CONFIG.foreground_color.rgba())
-            CONFIG.font:write(400, 300, "Dial " .. current_room.dect, 50, CONFIG.foreground_color.rgba())
-
-            CONFIG.font:write(30, 360, "Translation", 50, CONFIG.foreground_color.rgba())
-            CONFIG.font:write(400, 360, "Dial " .. current_room.translation, 50, CONFIG.foreground_color.rgba())
-
-            CONFIG.font:write(30, 460, "IRC", 50, CONFIG.foreground_color.rgba())
-            CONFIG.font:write(400, 460, current_room.irc, 50, CONFIG.foreground_color.rgba())
-
-            CONFIG.font:write(30, 520, "Hashtag", 50, CONFIG.foreground_color.rgba())
-            CONFIG.font:write(400, 520, current_room.hashtag, 50, CONFIG.foreground_color.rgba())
-        end
-    }}
-end)
-
-function node.render()
-    if base_time == 0 then
+local function draw_progress(starts, ends, now)
+    local mode = Config.get_progress()
+    if mode == "no" then
         return
     end
 
-    content.prepare()
+    if ends - starts < 2 then
+        return
+    end
 
-    CONFIG.background_color.clear()
-    CONFIG.background.ensure_loaded():draw(0, 0, WIDTH, HEIGHT)
+    local progress = 1.0 / (ends - starts) * (now - starts)
+    if mode == "bar_thin_white" then
+        white:draw(0, HEIGHT-10, WIDTH*progress, HEIGHT, 0.5)
+    elseif mode == "bar_thick_white" then
+        white:draw(0, HEIGHT-20, WIDTH*progress, HEIGHT, 0.5)
+    elseif mode == "bar_thin_black" then
+        black:draw(0, HEIGHT-10, WIDTH*progress, HEIGHT, 0.5)
+    elseif mode == "bar_thick_black" then
+        black:draw(0, HEIGHT-20, WIDTH*progress, HEIGHT, 0.5)
+    elseif mode == "circle" then
+        shaders.progress:use{
+            progress_angle = math.pi - progress * math.pi * 2
+        }
+        white:draw(WIDTH-40, HEIGHT-40, WIDTH-10, HEIGHT-10)
+        shaders.progress:deactivate()
+    elseif mode == "countdown" then
+        local remaining = math.ceil(ends - now)
+        local text
+        if remaining >= 60 then
+            text = string.format("%d:%02d", remaining / 60, remaining % 60)
+        else
+            text = remaining
+        end
+        local size = 32
+        local w = font:width(text, size)
+        black:draw(WIDTH - w - 4, HEIGHT - size - 4, WIDTH, HEIGHT, 0.6)
+        font:write(WIDTH - w - 2, HEIGHT - size - 2, text, size, 1,1,1,0.8)
+    end
+end
 
-    util.draw_correct(CONFIG.logo.ensure_loaded(), 20, 20, 300, 120)
-    CONFIG.font:write(400, 20, current_room.name_short, 100, CONFIG.foreground_color.rgba())
-    CONFIG.font:write(850, 20, clock.get(), 100, CONFIG.foreground_color.rgba())
-    -- font:write(WIDTH-300, 20, string.format("Day %d", day), 100, CONFIG.foreground_color.rgba())
+local ImageJob = function(item, ctx, fn)
+    fn.wait_t(ctx.starts - settings.IMAGE_PRELOAD)
 
-    local fov = math.atan2(HEIGHT, WIDTH*2) * 360 / math.pi
-    gl.perspective(fov, WIDTH/2, HEIGHT/2, -WIDTH,
-                        WIDTH/2, HEIGHT/2, 0)
-    content.draw()
+    local res = resource.load_image(ctx.asset)
+
+    for now in fn.wait_next_frame do
+        local state, err = res:state()
+        if state == "loaded" then
+            break
+        elseif state == "error" then
+            error("preloading failed: " .. err)
+        end
+    end
+
+    print "waiting for start"
+    local starts = fn.wait_t(ctx.starts)
+    local duration = ctx.ends - starts
+
+    print(">>> IMAGE", res, ctx.starts, ctx.ends)
+
+    if Config.get_kenburns() then
+        local function lerp(s, e, t)
+            return s + t * (e-s)
+        end
+
+        local paths = {
+            {from = {x=0.0,  y=0.0,  s=1.0 }, to = {x=0.08, y=0.08, s=0.9 }},
+            {from = {x=0.05, y=0.0,  s=0.93}, to = {x=0.03, y=0.03, s=0.97}},
+            {from = {x=0.02, y=0.05, s=0.91}, to = {x=0.01, y=0.05, s=0.95}},
+            {from = {x=0.07, y=0.05, s=0.91}, to = {x=0.04, y=0.03, s=0.95}},
+        }
+
+        local path = paths[math.random(1, #paths)]
+
+        local to, from = path.to, path.from
+        if math.random() >= 0.5 then
+            to, from = from, to
+        end
+
+        local w, h = res:size()
+        local multisample = w / WIDTH > 0.8 or h / HEIGHT > 0.8
+        local shader = multisample and shaders.multisample or shaders.simple
+        
+        while true do
+            local now = sys.now()
+            local t = (now - starts) / duration
+            shader:use{
+                x = lerp(from.x, to.x, t);
+                y = lerp(from.y, to.y, t);
+                s = lerp(from.s, to.s, t);
+            }
+            util.draw_correct(res, 0, 0, WIDTH, HEIGHT, ramp(
+                ctx.starts, ctx.ends, now, Config.get_switch_time()
+            ))
+            draw_progress(ctx.starts, ctx.ends, now)
+            if now > ctx.ends then
+                break
+            end
+            fn.wait_next_frame()
+        end
+    else
+        while true do
+            local now = sys.now()
+            util.draw_correct(res, 0, 0, WIDTH, HEIGHT, ramp(
+                ctx.starts, ctx.ends, now, Config.get_switch_time()
+            ))
+            draw_progress(ctx.starts, ctx.ends, now)
+            if now > ctx.ends then
+                break
+            end
+            fn.wait_next_frame()
+        end
+    end
+
+    print("<<< IMAGE", res, ctx.starts, ctx.ends)
+    res:dispose()
+
+    return true
+end
+
+
+local VideoJob = function(item, ctx, fn)
+    fn.wait_t(ctx.starts - settings.VIDEO_PRELOAD)
+
+    local raw = sys.get_ext "raw_video"
+    local res = raw.load_video{
+        file = ctx.asset,
+        audio = Config.get_audio(),
+        looped = false,
+        paused = true,
+    }
+
+    for now in fn.wait_next_frame do
+        local state, err = res:state()
+        if state == "paused" then
+            break
+        elseif state == "error" then
+            error("preloading failed: " .. err)
+        end
+    end
+
+    print "waiting for start"
+    fn.wait_t(ctx.starts)
+
+    print(">>> VIDEO", res, ctx.starts, ctx.ends)
+    res:start()
+
+    while true do
+        local now = sys.now()
+        local rotation, portrait = Config.get_rotation()
+        local state, width, height = res:state()
+        if state ~= "finished" then
+            local layer = -2
+            if now > ctx.starts + 0.1 then
+                -- after the video started, put it on a more
+                -- foregroundy layer. that way two videos
+                -- played after one another are sorted in a
+                -- predictable way and no flickering occurs.
+                layer = -1
+            end
+            if portrait then
+                width, height = height, width
+            end
+            local x1, y1, x2, y2 = util.scale_into(NATIVE_WIDTH, NATIVE_HEIGHT, width, height)
+            res:layer(layer):rotate(rotation):target(x1, y1, x2, y2, ramp(
+                ctx.starts, ctx.ends, now, Config.get_switch_time()
+            ))
+        end
+        draw_progress(ctx.starts, ctx.ends, now)
+        if now > ctx.ends then
+            break
+        end
+        fn.wait_next_frame()
+    end
+
+    print("<<< VIDEO", res, ctx.starts, ctx.ends)
+    res:dispose()
+
+    return true
+end
+
+local Time = (function()
+    local base
+    util.data_mapper{
+        ["clock/set"] = function(t)
+            base = tonumber(t) - sys.now()
+        end
+    }
+    return {
+        get = function()
+            if base then
+                return base + sys.now()
+            end
+        end
+    }
+end)()
+
+local Queue = (function()
+    local jobs = {}
+    local scheduled_until = sys.now()
+
+    local function enqueue(starts, ends, item)
+        local co = coroutine.create(({
+            image = ImageJob,
+            video = VideoJob,
+        })[item.type])
+
+        local success, asset = pcall(resource.open_file, item.asset_name)
+        if not success then
+            print("CANNOT GRAB ASSET: ", asset)
+            return
+        end
+
+        -- an image may overlap another image
+        if #jobs > 0 and jobs[#jobs].type == "image" and item.type == "image" then
+            starts = starts - Config.get_switch_time()
+        end
+
+        local ctx = {
+            starts = starts,
+            ends = ends,
+            asset = asset;
+        }
+
+        local success, err = coroutine.resume(co, item, ctx, {
+            wait_next_frame = function ()
+                return coroutine.yield(false)
+            end;
+            wait_t = function(t)
+                while true do
+                    local now = coroutine.yield(false)
+                    if now > t then
+                        return now
+                    end
+                end
+            end;
+        })
+
+        if not success then
+            print("CANNOT START JOB: ", err)
+            return
+        end
+
+        jobs[#jobs+1] = {
+            co = co;
+            ctx = ctx;
+            type = item.type;
+        }
+
+        scheduled_until = ends
+        print("added job. scheduled program until ", scheduled_until)
+    end
+
+    local function schedule_synced()
+        local starts = scheduled_until 
+        local playlist = Config.get_playlist()
+
+        local now = sys.now()
+        local unix = Time.get()
+        if not unix then
+            return
+        end
+        print()
+        local schedule_time = unix + scheduled_until - now + 0.05
+
+        print("unix now", unix)
+        print("schedule time:", schedule_time)
+
+        for idx = 1, #playlist do
+            local item = playlist[idx]
+            print("item", idx)
+            local cycle = math.floor(schedule_time / item.total_duration)
+            print("cycle", cycle)
+            local loop_base = cycle * item.total_duration
+            local unix_start = loop_base + item.offset
+            print("unix_start", unix_start)
+            local start = now + (unix_start - unix)
+            print("--> start", start)
+            if start > scheduled_until - 0.05 then
+                return enqueue(scheduled_until, start + item.duration, item)
+            end
+        end
+        scheduled_until = now
+        print "didn't find any schedulable item"
+    end
+
+    local function tick()
+        gl.clear(0, 0, 0, 0)
+
+        if Config.get_synced() then
+            if sys.now() + settings.PRELOAD_TIME > scheduled_until then
+                schedule_synced()
+            end
+        else
+            for try = 1,3 do
+                if sys.now() + settings.PRELOAD_TIME < scheduled_until then
+                    break
+                end
+                local item = Scheduler.get_next()
+                enqueue(scheduled_until, scheduled_until + item.duration, item)
+            end
+        end
+
+        if #jobs == 0 then
+            Loading.fade_in()
+        else
+            Loading.fade_out()
+        end
+
+        local now = sys.now()
+        for idx = #jobs,1,-1 do -- iterate backwards so we can remove finished jobs
+            local job = jobs[idx]
+            local success, is_finished = coroutine.resume(job.co, now)
+            if not success then
+                print("CANNOT RESUME JOB: ", is_finished)
+                table.remove(jobs, idx)
+            elseif is_finished then
+                table.remove(jobs, idx)
+            end
+        end
+
+        Loading.draw()
+    end
+
+    return {
+        tick = tick;
+    }
+end)()
+
+util.set_interval(1, node.gc)
+
+function node.render()
+    -- print("--- frame", sys.now())
+    gl.clear(0, 0, 0, 1)
+    Config.apply_transform()
+    Queue.tick()
 end
