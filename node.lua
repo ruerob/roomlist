@@ -6,5 +6,5 @@ util.resource_loader{
 
 function node.render()
     gl.clear(0,0,0,1)
-    font:write(250, 300, "Hello world", 64, 1,1,1,1)
+    font:write(250, 300, CONFIG.text, 64, 1,1,1,1)
 end
