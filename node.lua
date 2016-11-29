@@ -1,18 +1,3 @@
-local Config = (function()
-    local text
-
-    util.file_watch("config.json", function(raw)
-        print "updated config.json"
-        local config = json.decode(raw)
-
-        text = config.text
-    end)
-
-    return {
-        get_text = function() return text end;
-    }
-end)()
-
 gl.setup(1024, 768)
 
 util.resource_loader{
