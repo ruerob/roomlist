@@ -16,7 +16,7 @@ end)()
 gl.setup(1024, 768)
 
 util.resource_loader{
-    "font.ttf"
+    "roboto.ttf"
 }
 
 function node.render()
