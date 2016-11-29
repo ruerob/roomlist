@@ -1,4 +1,4 @@
-gl.setup(1024, 768)
+gl.setup(1920, 1200)
 
 util.resource_loader{
     "roboto.ttf"
