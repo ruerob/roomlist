@@ -83,11 +83,9 @@
         "itemname": "Item",
         "items": [{
             "title": "Asset",
-            "ui_width": 5,
-            "name": "file",
-            "type": "resource",
-            "valid": ["image", "video"],
-            "default": "empty.png"
+            "name": "Zeile",
+            "type": "String",
+            "default": "Raum 01 | 10:30 | Deutsch"
         }, {
             "title": "Play time",
             "ui_width": 3,
