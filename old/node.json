@@ -1,0 +1,9 @@
+{
+    "name": "Roomlist Node",
+    "options": [{
+        "title": "Text",
+        "name": "text",
+        "type": "string",
+        "default": "Hello world"
+    }]
+}

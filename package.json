@@ -1,5 +1,6 @@
 {
-    "name": "Hello world",
-    "author": "Florian Wesch <fw@dividuum.de>",
-    "desc": "A hello world"
+    "name": "Conference Room Announcement",
+    "author": "fw@dividuum.de",
+    "desc": "Show information about upcoming talks",
+    "repository": "https://github.com/info-beamer/package-conference-room"
 }
