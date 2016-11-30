@@ -51,15 +51,15 @@ end)()
 function write_line(x,y,room,day,time,course,teacher)
     offset_step_length=200
     offset_step=0
-    font:write(x+(offset_step_length*(offset_step)),y,room)
+    font:write(x+(offset_step_length*(offset_step)),y,room,60,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day,60,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time,60,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course,60,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,60,1,1,1,1)
 end
 
 function node.render()
@@ -68,5 +68,8 @@ function node.render()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     local offset=0
-    
+    for idx=1, #roomlist do
+        write_line(0,60,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
+        offset=offset+80
+    end
 end
