@@ -62,27 +62,13 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
 end
 
-function get_timezone()
-  local now = os.time()
-  --return os.difftime(now, os.time(os.date("!*t", now)))
-    return ""
-end
-timezone = get_timezone()
-
---[[ Return a timezone string in ISO 8601:2000 standard form (+hhmm or -hhmm)
-local function get_tzoffset(timezone)
-  local h, m = math.modf(timezone / 3600)
-  return string.format("%+.4d", 100 * h + 60 * m)
-end
-tzoffset = get_tzoffset(timezone)]]--
-
 function node.render()
     -- print("--- frame", sys.now())
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
-    time = os.date("*t")
-    font:write(1780,0,("%02d:%02d"):format(time.hour, time.min),50,1,1,1,1)
+    time = os.time()
+    font:write(1780,0,time,50,1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
         write_line(0,60+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
