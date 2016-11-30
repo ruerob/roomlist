@@ -62,13 +62,14 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
 end
 
---[[function get_timezone()
+function get_timezone()
   local now = os.time()
-  return os.difftime(now, os.time(os.date("!*t", now)))
+  --return os.difftime(now, os.time(os.date("!*t", now)))
+    return ""
 end
 timezone = get_timezone()
 
--- Return a timezone string in ISO 8601:2000 standard form (+hhmm or -hhmm)
+--[[ Return a timezone string in ISO 8601:2000 standard form (+hhmm or -hhmm)
 local function get_tzoffset(timezone)
   local h, m = math.modf(timezone / 3600)
   return string.format("%+.4d", 100 * h + 60 * m)
