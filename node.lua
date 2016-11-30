@@ -51,11 +51,15 @@ end)()
 function write_line(x,y,room,day,time,course,teacher)
     offset_step_length=200
     offset_step=0
-    font:write(x+(offset_step_length*(offset_step++)),y,room)
-    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. day)
-    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. time)
-    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. course)
-    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. teacher)
+    font:write(x+(offset_step_length*(offset_step)),y,room)
+    offset_step = offset_step + 1
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day)
+    offset_step = offset_step + 1
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time)
+    offset_step = offset_step + 1
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course)
+    offset_step = offset_step + 1
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher)
 end
 
 function node.render()
