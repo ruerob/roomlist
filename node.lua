@@ -77,9 +77,11 @@ function node.render()
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
+    color = [0.5,0.5,0.5,1]
+    
     print(colors[2])
     
-    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,1,1,1,1)
+    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,color)
     
     --write header
     write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
