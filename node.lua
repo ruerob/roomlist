@@ -73,10 +73,11 @@ function node.render()
     --get roomlist from config
     local roomlist = Config.get_roomlist()
     local colors = Config.get_colors()
+    
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
-    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,colors[1].rgba())
+    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,colors[2].rgba())
     
     --write header
     write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
