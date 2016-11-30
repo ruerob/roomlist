@@ -9,7 +9,7 @@
         "type": "select",
         "options": [
             [1, "Winterzeit"],
-            [2, "Sommerzeit"],
+            [2, "Sommerzeit"]
         ],
         "default": 1
     }, {
