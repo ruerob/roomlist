@@ -36,13 +36,13 @@
         "default": ""
     }, {
         "title": "ungerade Zeilen",
-        "name": "odd Lines",
+        "name": "odd-lines",
         "type": "color",
         "ui_width": 3,
         "default": ""
     }, {
         "title": "gerade Zeilen",
-        "name": "even numbers",
+        "name": "even_lines",
         "type": "color",
         "ui_width": 3,
         "default": ""
