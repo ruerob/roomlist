@@ -9,7 +9,8 @@ local Config = (function()
     util.file_watch("config.json", function(raw)
         print "updated config.json"
         local config = json.decode(raw)
-        local timezone = config.timezone
+        
+        timezone = config.timezone
 
         gl.setup(1920, 1080)
 
