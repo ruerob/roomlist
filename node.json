@@ -36,7 +36,7 @@
         "default": ""
     }, {
         "title": "ungerade Zeilen",
-        "name": "odd-lines",
+        "name": "odd_lines",
         "type": "color",
         "ui_width": 3,
         "default": ""
