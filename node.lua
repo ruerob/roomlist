@@ -49,7 +49,7 @@ local Time = (function()
 end)()
 
 function write_line(x,y,room,day,time,course,teacher)
-    offset_step_length=200
+    offset_step_length=320
     offset_step=0
     font:write(x+(offset_step_length*(offset_step)),y,room,60,1,1,1,1)
     offset_step = offset_step + 1
