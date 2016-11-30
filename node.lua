@@ -78,7 +78,11 @@ function node.render()
         write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
         offset=offset+50
     end
-    local day=string.gmatch(roomlist[1].day, '%d+')
+    local day = {}
+    
+    for t in string.gmatch(roomlist[1].day, '%d+')
+        day[#day+1] = t
+    end
     
     font:write(0,1000,"Debug year: " .. day[1],font_size,1,1,1,1)
 end
