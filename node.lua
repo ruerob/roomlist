@@ -48,15 +48,24 @@ local Time = (function()
     }
 end)()
 
+function write_line(x,y,room,day,time,course,teacher)
+    offset_step_length=200
+    offset_step=0
+    font:write(x+(offset_step_length*(offset_step++)),y,room)
+    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. day)
+    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. time)
+    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. course)
+    font:write(x+(offset_step_length*(offset_step++)),y,"|" .. teacher)
+end
+
 function node.render()
     -- print("--- frame", sys.now())
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
-    font:write(10, 10, "|Raum|Tag|Uhrzeit|Fach|Lehrer", 80, 1,1,1,1)
-    font:write(10, 1000, "Debug: " .. #roomlist, 80, 1,1,1,1)
+    write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     local offset=0
     for idx=1, #roomlist do
-        font:write(10, 90+offset, "|" .. roomlist[idx].room, 80, 1,1,1,1)
+        write_line(0,60,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
         offset=offset+80
     end
 end
