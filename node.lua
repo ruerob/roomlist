@@ -4,7 +4,7 @@ gl.setup(1920, 1080)
 local json = require "json"
 
 -- setting the font
-local font = resource.load_font "roboto.ttf"
+local font = resource.load_font "RobotoMono-Regular.ttf"
 local font_size = 40
 
 --loading the config
