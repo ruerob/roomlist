@@ -80,9 +80,10 @@ function node.render()
     end
     local day = {}
     
-    for t in string.gmatch(roomlist[1].day, '%d+') do
+    --[[for t in string.gmatch((roomlist[1].day .. ".") .. roomlist[1].time, '%d+') do
         day[#day+1] = t
-    end
+    end]]--
     
-    font:write(0,1000,"Debug year: " .. day[1],font_size,1,1,1,1)
+    test = (roomlist[1].day .. ".") .. roomlist[1].time
+    font:write(0,1000,"Debug : " .. test,font_size,1,1,1,1)
 end
