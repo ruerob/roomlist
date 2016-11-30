@@ -78,18 +78,20 @@ function node.render()
     for idx=1, #roomlist do
         
         local timestamp = {}
+        local time = os.time() + Config.get_timezone()*60*60
     
         for t in string.gmatch((roomlist[idx].day .. ".") .. roomlist[idx].time, '%d+') do
             timestamp[#timestamp+1] = t
         end
         
-        local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
-        if ( start_time > (time-15*60) ) then
+        --local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
+        
+        --if ( start_time > (time-15*60) ) then
             write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
             offset=offset+50
-        end
+        --end
     end
     
     
-    font:write(0,1000,"Debug year: " .. day[1],font_size,1,1,1,1)
+    font:write(0,1000,"Debug: passed without error",font_size,1,1,1,1)
 end
