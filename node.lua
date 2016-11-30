@@ -11,7 +11,9 @@ local font_size = 40
 local Config = (function()
     --needed variables
     local roomlist = {}
+    local colors = {}
     local timezone
+    local header
 
     --we watch the config.json file which is created on info-beamer hosting
     util.file_watch("config.json", function(raw)
@@ -20,6 +22,11 @@ local Config = (function()
         
         --filling the variables
         timezone = config.timezone
+        header = config.header
+        colors[1] = config.background
+        colors[2] = config.font_color
+        colors[3] = config.odd_lines
+        colors[4] = config.even_lines
         roomlist = {}
 
         --filling the roomlist
@@ -32,6 +39,7 @@ local Config = (function()
                 time = item.time,
                 course = item.course,
                 teacher = item.teacher
+                comment = item.comment
             }
         end
     end)
@@ -39,6 +47,8 @@ local Config = (function()
     return {
         get_roomlist = function() return roomlist end;
         get_timezone = function() return timezone end;
+        get_header = function() return header end;
+        get_colors = function() return colors end;
     }
 end)()
 
@@ -66,12 +76,18 @@ function node.render()
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
+    r=colors[1][1]
+    g=colors[1][2]
+    b=colors[1][3]
+    a=colors[1][4]
+    font:write(960-font:width(Config.get_header(),80)/2,0,Config.get_header(),80,r,g,b,a)
+    
     --write header
-    write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
+    write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     
     --write time in the upper right corner
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
-    font:write(1780,0,time,font_size,1,1,1,1)
+    font:write(1780,100,time,font_size,1,1,1,1)
     
     --set offset for the first line
     local offset=0
@@ -91,7 +107,7 @@ function node.render()
         
         --draw the line if the room start time wasn't 15 minutes ago
         if ( start_time > (time-15*60) ) then
-            write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
+            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
             offset=offset+50
         end
     end
