@@ -3,37 +3,6 @@ gl.setup(1920, 1080)
 local json = require "json"
 local font = resource.load_font "roboto.ttf"
 
-local Config = (function()
-    local roomlist = {}
-
-    util.file_watch("config.json", function(raw)
-        print "updated config.json"
-        local config = json.decode(raw)
-
-        
-        gl.setup(1920, 1080)
-
-        playlist = {}
-
-        local offset = 0
-        for idx = 1, #config.playlist do
-            local item = config.playlist[idx]
-            playlist[#playlist+1] = {
-                index = idx,
-                room = item.room,
-                day = item.day,
-                time = item.time,
-                course = item.course,
-                tacher = item.teacher
-            }
-        end
-    end)
-
-    return {
-        get_playlist = function() return playlist end;
-    }
-end)()
-
 local Time = (function()
     local base
     util.data_mapper{
