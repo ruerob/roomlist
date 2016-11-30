@@ -69,15 +69,15 @@ end)()
 function write_line(x,y,room,day,time,course,teacher,color)
     offset_step_length=300
     offset_step=0
-    font:write(x+(offset_step_length*(offset_step)),y,room,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,room,font_size,get_rgba(color))
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,day,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,day,font_size,get_rgba(color))
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,time,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,time,font_size,get_rgba(color))
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,course,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,course,font_size,get_rgba(color))
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,get_rgba(color))
 end
 
 --standard render function used by info-beamer to draw the screen
@@ -118,11 +118,11 @@ function node.render()
         
         --draw the line if the room start time wasn't 15 minutes ago
         if ( start_time > (time-15*60) ) then
-            --[[if (idx%2)==0 then
-                odd_lines:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+            if (idx%2)==0 then
+                odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
             else
-                even_lines:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
-            end]]--
+                even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+            end
             
             write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
             offset=offset+50
