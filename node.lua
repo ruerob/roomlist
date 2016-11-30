@@ -93,7 +93,7 @@ function node.render()
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
     
     --write header
-    table_head_color:draw(0, 100, WIDTH, HEIGHT, font_size)
+    table_head_color:draw(0, 100, WIDTH, font_size, 0.5)
     write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer",colors[3])
     
     --write time in the upper right corner
