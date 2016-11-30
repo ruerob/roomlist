@@ -7,11 +7,27 @@
         "title": "Zeiteinstellung",
         "name": "timezone",
         "type": "select",
+        "ui_width": 2,
         "options": [
             [1, "Winterzeit"],
             [2, "Sommerzeit"]
         ],
         "default": 1
+    }, {
+        "title": "Überschrift",
+        "name": "header",
+        "type": "string",
+        "ui_width": 2,
+        "default": "Raumplan"
+    }, {
+        "title": "Farben",
+        "type": "section"
+    }, {
+        "title": "Hintergrundfarbe",
+        "name": "background",
+        "type": "color",
+        "ui_width": 2,
+        "default": ""
     }, {
         "title": "Was soll angezeigt werden",
         "type": "section"
@@ -50,6 +66,12 @@
             "type": "string",
             "ui_width": 2,
             "default": "Frau Mustermann"
+        },{
+            "title": "Kommentar",
+            "name": "comment",
+            "type": "string",
+            "ui_width": 12,
+            "default": ""
         }]
     }]
 }

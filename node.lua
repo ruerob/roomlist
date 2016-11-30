@@ -48,13 +48,13 @@ function write_line(x,y,room,day,time,course,teacher)
     offset_step=0
     font:write(x+(offset_step_length*(offset_step)),y,room,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"| " .. day,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,day,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"| " .. time,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,time,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"| " .. course,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,course,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"| " .. teacher,font_size,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,1,1,1,1)
 end
 
 --standard render function used by info-beamer to draw the screen
