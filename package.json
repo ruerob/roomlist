@@ -1,6 +1,6 @@
 {
-    "name": "HD Image/Video Player",
-    "author": "Florian Wesch <fw@dividuum.de>",
-    "desc": "Displays images and videos in a rotation",
-    "repository": "https://github.com/info-beamer/package-hd-player"
+    "name": "Roomlist",
+    "author": "Robert Rüdiger <raimocom.ruerob@gmail.com>",
+    "desc": "Displays a list that shows in which room is wich course, like a flightplan",
+    "repository": "https://github.com/ruerob/roomlist.git"
 }

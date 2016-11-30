@@ -1,98 +1,38 @@
 {
     "name": "Player",
     "options": [{
-        "title": "Configuration",
+        "title": "Was soll angezeigt werden",
         "type": "section"
     }, {
-        "title": "Switch time",
-        "ui_width": 4,
-        "name": "switch_time",
-        "type": "select",
-        "doc_link": true,
-        "options": [
-            [0, "Instantly"],
-            [0.2, "Short"],
-            [0.4, "Medium (default)"],
-            [0.8, "Long"]
-        ],
-        "default": 0.0
-    }, {
-        "title": "Display rotation",
-        "ui_width": 4,
-        "name": "rotation",
-        "type": "select",
-        "hint": "Rotate content clockwise?",
-        "doc_link": true,
-        "options": [
-            [0, "None"],
-            [90, "90°"],
-            [180, "180°"],
-            [270, "270°"]
-        ],
-        "default": 0
-    }, {
-        "title": "Progress indicator",
-        "ui_width": 4,
-        "name": "progress",
-        "type": "select",
-        "hint": "Shows how long the current playlist item is displayed",
-        "doc_link": true,
-        "options": [
-            ["no", "Disabled"],
-            ["bar_thin_white", "Bar (thin, white)"],
-            ["bar_thick_white", "Bar (thick, white)"],
-            ["bar_thin_black", "Bar (thin, black)"],
-            ["bar_thick_black", "Bar (thick, black)"],
-            ["circle", "Circle"],
-            ["countdown", "Countdown"]
-        ],
-        "default": 0
-    }, {
-        "title": "Synced playback",
-        "ui_width": 4,
-        "name": "synced",
-        "type": "boolean",
-        "hint": "Start play list items synchronized on multiple devices (based on the global wall clock time)",
-        "doc_link": true,
-        "default": false
-    }, {
-        "title": "Ken Burns effect for images",
-        "ui_width": 4,
-        "name": "kenburns",
-        "type": "boolean",
-        "hint": "Slowly pan and zoom displayed images using the Ken Burns effect",
-        "doc_link": true,
-        "default": false
-    }, {
-        "title": "Play audio for videos",
-        "ui_width": 4,
-        "name": "audio",
-        "type": "boolean",
-        "hint": "Play audio for all videos",
-        "doc_link": true,
-        "default": false
-    },
-
-    {
-        "title": "What to display",
-        "type": "section"
-    }, {
-        "title": "Playlist",
-        "name": "playlist",
+        "title": "Roomlist",
+        "name": "roomlist",
         "type": "list",
         "itemname": "Item",
         "items": [{
-            "title": "Asset",
-            "name": "Zeile",
+            "title": "Raum",
+            "name": "room",
             "type": "String",
-            "default": "Raum 01 | 10:30 | Deutsch"
-        }, {
-            "title": "Play time",
-            "ui_width": 3,
-            "name": "duration",
-            "type": "duration",
-            "hint": "How long should this item be displayed on screen. For videos, use their duration",
-            "default": 5
+            "default": "Raum 01"
+        },{
+            "title": "Tag",
+            "name": "day",
+            "type": "String",
+            "default": "01.01.2017"
+        },{
+            "title": "Uhrzeit",
+            "name": "time",
+            "type": "String",
+            "default": "10:30"
+        },{
+            "title": "Fach",
+            "name": "course",
+            "type": "String",
+            "default": "Mathematik"
+        },{
+            "title": "Lehrer",
+            "name": "teacher",
+            "type": "String",
+            "default": "Frau Mustermann"
         }]
     }]
 }
