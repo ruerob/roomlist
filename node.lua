@@ -118,11 +118,11 @@ function node.render()
         
         --draw the line if the room start time wasn't 15 minutes ago
         if ( start_time > (time-15*60) ) then
-            if (idx%2)==0 then
+            --[[if (idx%2)==0 then
                 odd_lines:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
             else
                 even_lines:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
-            end
+            end]]--
             
             write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
             offset=offset+50
