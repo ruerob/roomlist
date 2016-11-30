@@ -7,7 +7,7 @@
         "title": "Zeiteinstellung",
         "name": "timezone",
         "type": "select",
-        "ui_width": 2,
+        "ui_width": 3,
         "options": [
             [1, "Winterzeit"],
             [2, "Sommerzeit"]
@@ -17,7 +17,7 @@
         "title": "Überschrift",
         "name": "header",
         "type": "string",
-        "ui_width": 2,
+        "ui_width": 3,
         "default": "Raumplan"
     }, {
         "title": "Farben",
@@ -26,7 +26,25 @@
         "title": "Hintergrundfarbe",
         "name": "background",
         "type": "color",
-        "ui_width": 2,
+        "ui_width": 3,
+        "default": ""
+    }, {
+        "title": "Textfarbe",
+        "name": "font_color",
+        "type": "color",
+        "ui_width": 3,
+        "default": ""
+    }, {
+        "title": "ungerade Zeilen",
+        "name": "odd Lines",
+        "type": "color",
+        "ui_width": 3,
+        "default": ""
+    }, {
+        "title": "gerade Zeilen",
+        "name": "even numbers",
+        "type": "color",
+        "ui_width": 3,
         "default": ""
     }, {
         "title": "Was soll angezeigt werden",
