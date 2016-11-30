@@ -86,10 +86,10 @@ function node.render()
         
         local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
         
-        --if ( start_time > (time-15*60) ) then
+        if ( start_time > (time-15*60) ) then
             write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
             offset=offset+50
-        --end
+        end
     end
     
     
