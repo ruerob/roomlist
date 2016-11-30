@@ -70,7 +70,7 @@ function node.render()
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
-    time = os.date("!%H:%M:%S", os.time() + Config.get_timezone()*60*60)
+    time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
     font:write(1780,0,time,50,1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
@@ -78,5 +78,5 @@ function node.render()
         offset=offset+60
     end
     
-    --font:write(0,1000,"Debug Timezone: " .. tzoffset,50,1,1,1,1)
+    font:write(0,1000,"Debug" .. os.time(os.date())-os.time(),50,1,1,1,1)
 end
