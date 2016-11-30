@@ -62,7 +62,7 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
 end
 
-function get_timezone()
+--[[function get_timezone()
   local now = os.time()
   return os.difftime(now, os.time(os.date("!*t", now)))
 end
@@ -73,7 +73,7 @@ local function get_tzoffset(timezone)
   local h, m = math.modf(timezone / 3600)
   return string.format("%+.4d", 100 * h + 60 * m)
 end
-tzoffset = get_tzoffset(timezone)
+tzoffset = get_tzoffset(timezone)]]--
 
 function node.render()
     -- print("--- frame", sys.now())
@@ -88,5 +88,5 @@ function node.render()
         offset=offset+60
     end
     
-    font:write(0,1000,"Debug Timezone: " .. tzoffset,50,1,1,1,1)
+    --font:write(0,1000,"Debug Timezone: " .. tzoffset,50,1,1,1,1)
 end
