@@ -38,7 +38,7 @@ local Config = (function()
                 day = item.day,
                 time = item.time,
                 course = item.course,
-                teacher = item.teacher
+                teacher = item.teacher,
                 comment = item.comment
             }
         end
