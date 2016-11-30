@@ -62,16 +62,24 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
 end
 
+local function get_timezone()
+  local now = os.time()
+  return os.difftime(now, os.time(os.date("!*t", now)))
+end
+local timezone = get_timezone()
+
 function node.render()
     -- print("--- frame", sys.now())
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     time = os.date("*t")
-    font:write(1820,0,("%02d:%02d"):format(time.hour, time.min),50,1,1,1,1)
+    font:write(1780,0,("%02d:%02d"):format(time.hour, time.min),50,1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
         write_line(0,60+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
         offset=offset+60
     end
+    
+    font:write(0,1000,"Debug Timezone: " .. timezone,50,1,1,1,1)
 end
