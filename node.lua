@@ -29,8 +29,8 @@ local Config = (function()
     end)
 
     return {
-        get_roomlist = function() return roomlist end
-        get_timezone = function() return timezone end
+        get_roomlist = function() return roomlist end;
+        get_timezone = function() return timezone end;
     }
 end)()
 
