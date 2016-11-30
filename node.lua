@@ -80,6 +80,7 @@ function node.render()
     g=colors[1][2]
     b=colors[1][3]
     a=colors[1][4]
+    font:write(0,0,Config.get_header(),80,r,g,b,a)
     --font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,r,g,b,a)
     
     --write header
@@ -87,7 +88,7 @@ function node.render()
     
     --write time in the upper right corner
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
-    font:write(1780,100,time,font_size,1,1,1,1)
+    font:write(1780,0,time,font_size,1,1,1,1)
     
     --set offset for the first line
     local offset=0
