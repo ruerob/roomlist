@@ -67,7 +67,7 @@ function node.render()
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
-    time = os.date("%Z")
+    time = Time.get()
     font:write(1780,0,time,50,1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
