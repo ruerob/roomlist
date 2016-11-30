@@ -68,8 +68,5 @@ function node.render()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     local offset=0
-    for idx=1, #roomlist do
-        write_line(0,60,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
-        offset=offset+80
-    end
+    
 end
