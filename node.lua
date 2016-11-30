@@ -2,6 +2,7 @@ gl.setup(1920, 1080)
 
 local json = require "json"
 local font = resource.load_font "roboto.ttf"
+local font_size = 40
 
 local Config = (function()
     local roomlist = {}
@@ -54,15 +55,15 @@ end)()
 function write_line(x,y,room,day,time,course,teacher)
     offset_step_length=300
     offset_step=0
-    font:write(x+(offset_step_length*(offset_step)),y,room,50,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,room,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day,50,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"| " .. day,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time,50,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"| " .. time,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course,50,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"| " .. course,font_size,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"| " .. teacher,font_size,1,1,1,1)
 end
 
 function node.render()
@@ -71,12 +72,13 @@ function node.render()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
-    font:write(1780,0,time,50,1,1,1,1)
+    font:write(1780,0,time,font_size,1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
-        write_line(0,60+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
-        offset=offset+60
+        write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
+        offset=offset+50
     end
+    day=string.gmatch(roomlist[1].day, '%p')
     
-    font:write(0,1000,"Debug" .. os.time(os.date())-os.time(),50,1,1,1,1)
+    font:write(0,1000,"Debug year: " .. day[3],font_size,1,1,1,1)
 end
