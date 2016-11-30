@@ -81,7 +81,7 @@ function node.render()
     b=colors[1][3]
     a=colors[1][4]
     
-    font:write(0,0,r,30,1,1,1,1)
+    font:write(0,0,colors[1],30,1,1,1,1)
     
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,1,1,1,1)
     
