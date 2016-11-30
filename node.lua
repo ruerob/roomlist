@@ -15,7 +15,7 @@ local Config = (function()
         roomlist = {}
 
         for idx = 1, #config.roomlist do
-            local item = config.playlist[idx]
+            local item = config.roomlist[idx]
             roomlist[#roomlist+1] = {
                 index = idx,
                 room = item.room,
