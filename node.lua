@@ -80,7 +80,7 @@ function node.render()
     end
     local day = {}
     
-    for t in string.gmatch(roomlist[1].day, '%d+')
+    for t in string.gmatch(roomlist[1].day, '%d+') do
         day[#day+1] = t
     end
     
