@@ -67,7 +67,7 @@ function node.render()
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
-    time = os.date("%z") % 86400
+    time = os.date("%z", os.time()) % 86400
     h = (time / 60) / 60
     m = (time % 3600) / 60
     s = (time % 60)
