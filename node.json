@@ -3,11 +3,6 @@
     "options": [{
         "title": "Was soll angezeigt werden",
         "type": "section"
-    },{
-        "title": "Zeitzone"
-        "name": "timezone"
-        "type": "number"
-        "default": 1
     }, {
         "title": "Roomlist",
         "name": "roomlist",
