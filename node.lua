@@ -53,9 +53,10 @@ function node.render()
     local roomlist = Config.get_roomlist()
     gl.clear(0, 0, 0, 1)
     font:write(10, 10, "|Raum|Tag|Uhrzeit|Fach|Lehrer", 80, 1,1,1,1)
+    font:write(10, 900, "Debug: " .. #roomlist, 80, 1,1,1,1)
     local offset=0
     for idx=1, #roomlist do
-        font:write(10, 10+offset, "|" .. roomlist[idx].room .. "|" .. roomlist[idx].day .. "|" .. roomlist[idx].time .. "|" .. roomlist[idx].course .. "|" .. roomlist[idx].teacher, 80, 1,1,1,1)
+        font:write(10, 90+offset, "|" .. roomlist[idx].room .. "|" .. roomlist[idx].day .. "|" .. roomlist[idx].time .. "|" .. roomlist[idx].course .. "|" .. roomlist[idx].teacher, 80, 1,1,1,1)
         offset=offset+80
     end
 end
