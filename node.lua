@@ -69,7 +69,7 @@ function node.render()
     write_line(0,0,"Raum","Tag","Uhrzeit","Fach","Lehrer")
     time = os.time() % 86400
     h = (time / 60) / 60
-    m = (time % 1440) / 60
+    m = (time % 3600) / 60
     s = (time % 60)
     font:write(1780,0,("%02d:%02d:%02d"):format(h, m, s),50,1,1,1,1)
     local offset=0
