@@ -1,6 +1,14 @@
 {
     "name": "Player",
     "options": [{
+        "title": "Einstellungen"
+        "type": "section"
+    }, {
+        "title": "Zeitzone UTC +",
+        "name": "timezone",
+        "type": "number",
+        "default": "1"
+    }, {
         "title": "Was soll angezeigt werden",
         "type": "section"
     }, {
