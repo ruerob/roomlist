@@ -29,6 +29,24 @@
         "ui_width": 3,
         "default": [0,0,0,1]
     }, {
+        "title": "Überschriftfarbe",
+        "name": "header_color",
+        "type": "color",
+        "ui_width": 3,
+        "default": [1,1,1,1]
+    }, {
+        "title": "Tabellenkopftextfarbe",
+        "name": "tablehead_color",
+        "type": "color",
+        "ui_width": 3,
+        "default": [1,1,1,1]
+    }, {
+        "title": "Tabellenkopfhintergrundfarbe",
+        "name": "tableheadbackground_color",
+        "type": "color",
+        "ui_width": 3,
+        "default": [1,1,1,1]
+    }, {
         "title": "Textfarbe",
         "name": "font_color",
         "type": "color",

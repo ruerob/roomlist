@@ -7,6 +7,14 @@ local json = require "json"
 local font = resource.load_font "RobotoMono-Regular.ttf"
 local font_size = 40
 
+local table_head_color
+local odd_line_color
+local even_line_color
+
+function get_rgba(color)
+    return color.r, color.g, color.b, color.a
+end
+
 --loading the config
 local Config = (function()
     --needed variables
@@ -24,10 +32,15 @@ local Config = (function()
         timezone = config.timezone
         header = config.header
         colors[1] = config.background
-        colors[2] = config.font_color
-        colors[3] = config.odd_lines
-        colors[4] = config.even_lines
+        colors[2] = config.header_color
+        colors[3] = config.tablehead_color
+        colors[4] = config.font_color
         roomlist = {}
+                
+        table_head_color = resource.create_colored_texture(get_rgba(config.tableheadbackground_color))
+        odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
+        even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
+        
 
         --filling the roomlist
         for idx = 1, #config.roomlist do
@@ -53,7 +66,7 @@ local Config = (function()
 end)()
 
 --function to write the line for the room
-function write_line(x,y,room,day,time,course,teacher)
+function write_line(x,y,room,day,time,course,teacher,color)
     offset_step_length=300
     offset_step=0
     font:write(x+(offset_step_length*(offset_step)),y,room,font_size,1,1,1,1)
@@ -67,10 +80,6 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,1,1,1,1)
 end
 
-function get_rgba(color)
-    return color.r, color.g, color.b, color.a
-end
-
 --standard render function used by info-beamer to draw the screen
 function node.render()
     
@@ -79,12 +88,13 @@ function node.render()
     local colors = Config.get_colors()
     
     --clear the screen
-    gl.clear(0, 0, 0, 1)
+    gl.clear(get_rgba(colors[1]))
     
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
     
     --write header
-    write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
+    table_head_color:draw(0, 100, WIDTH, HEIGHT, font_size)
+    write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer",colors[3])
     
     --write time in the upper right corner
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
@@ -108,7 +118,7 @@ function node.render()
         
         --draw the line if the room start time wasn't 15 minutes ago
         if ( start_time > (time-15*60) ) then
-            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
+            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
             offset=offset+50
         end
     end
