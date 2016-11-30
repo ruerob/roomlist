@@ -48,7 +48,7 @@ local Config = (function()
         get_roomlist = function() return roomlist end;
         get_timezone = function() return timezone end;
         get_header = function() return header end;
-        get_color = function(number) return colors[number].r,colors[number].g,colors[number].b,colors[number].a end;
+        get_colors = function() return colors end;
     }
 end)()
 
@@ -67,18 +67,21 @@ function write_line(x,y,room,day,time,course,teacher)
     font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,1,1,1,1)
 end
 
+function get_rgba(color)
+    return color.r, color.g, color.b, color.a
+end
+
 --standard render function used by info-beamer to draw the screen
 function node.render()
     
     --get roomlist from config
     local roomlist = Config.get_roomlist()
+    local colors = Config.get_colors()
     
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
-    print(colors[2])
-    
-    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,Config.get_color(2))
+    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
     
     --write header
     write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
