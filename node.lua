@@ -77,7 +77,7 @@ function node.render()
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
-    local color = [0.5,0.5,0.5,1]
+    local color = {0.5,0.5,0.5,1}
     
     print(colors[2])
     
