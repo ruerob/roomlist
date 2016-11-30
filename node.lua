@@ -48,7 +48,7 @@ local Config = (function()
         get_roomlist = function() return roomlist end;
         get_timezone = function() return timezone end;
         get_header = function() return header end;
-        get_colors = function() return colors end;
+        get_color = function(number) return colors[number].r,colors[number].g,colors[number].b,colors[number].a end;
     }
 end)()
 
@@ -72,14 +72,13 @@ function node.render()
     
     --get roomlist from config
     local roomlist = Config.get_roomlist()
-    local colors = Config.get_colors()
     
     --clear the screen
     gl.clear(0, 0, 0, 1)
     
     print(colors[2])
     
-    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,colors[2].r,colors[2].g,colors[2].b,colors[2].a)
+    font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,Config.get_color(2))
     
     --write header
     write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer")
