@@ -11,27 +11,27 @@
         "items": [{
             "title": "Raum",
             "name": "room",
-            "type": "String",
+            "type": "string",
             "default": "Raum 01"
         },{
             "title": "Tag",
             "name": "day",
-            "type": "String",
+            "type": "string",
             "default": "01.01.2017"
         },{
             "title": "Uhrzeit",
             "name": "time",
-            "type": "String",
+            "type": "string",
             "default": "10:30"
         },{
             "title": "Fach",
             "name": "course",
-            "type": "String",
+            "type": "string",
             "default": "Mathematik"
         },{
             "title": "Lehrer",
             "name": "teacher",
-            "type": "String",
+            "type": "string",
             "default": "Frau Mustermann"
         }]
     }]

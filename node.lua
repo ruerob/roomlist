@@ -108,70 +108,38 @@ local Loading = (function()
 end)()
 
 local Config = (function()
-    local playlist = {}
-    local switch_time = 1
-    local synced = false
-    local kenburns = false
-    local audio = false
-    local portrait = false
-    local rotation = 0
-    local transform = function() end
+    local roomlist = {}
 
     util.file_watch("config.json", function(raw)
         print "updated config.json"
         local config = json.decode(raw)
 
-        synced = config.synced
-        kenburns = config.kenburns
-        audio = config.audio
-        progress = config.progress
-
-        rotation = config.rotation
-        portrait = rotation == 90 or rotation == 270
+        
         gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
-        transform = util.screen_transform(rotation)
         print("screen size is " .. WIDTH .. "x" .. HEIGHT)
 
         if #config.playlist == 0 then
             playlist = settings.FALLBACK_PLAYLIST
-            switch_time = 0
-            kenburns = false
         else
             playlist = {}
-            local total_duration = 0
-            for idx = 1, #config.playlist do
-                local item = config.playlist[idx]
-                total_duration = total_duration + item.duration
-            end
 
             local offset = 0
             for idx = 1, #config.playlist do
                 local item = config.playlist[idx]
-                if item.duration > 0 then
-                    playlist[#playlist+1] = {
-                        index = idx,
-                        offset = offset,
-                        total_duration = total_duration,
-                        duration = item.duration,
-                        asset_name = item.file.asset_name,
-                        type = item.file.type,
-                    }
-                    offset = offset + item.duration
-                end
+                playlist[#playlist+1] = {
+                    index = idx,
+                    room = item.room,
+                    day = item.day,
+                    time = item.time,
+                    course = item.course,
+                    tacher = item.teacher
+                }
             end
-            switch_time = config.switch_time
         end
     end)
 
     return {
         get_playlist = function() return playlist end;
-        get_switch_time = function() return switch_time end;
-        get_synced = function() return synced end;
-        get_kenburns = function() return kenburns end;
-        get_audio = function() return audio end;
-        get_progress = function() return progress end;
-        get_rotation = function() return rotation, portrait end;
-        apply_transform = function() return transform() end;
     }
 end)()
 
@@ -525,6 +493,5 @@ util.set_interval(1, node.gc)
 function node.render()
     -- print("--- frame", sys.now())
     gl.clear(0, 0, 0, 1)
-    Config.apply_transform()
     Queue.tick()
 end
