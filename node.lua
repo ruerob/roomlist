@@ -74,16 +74,22 @@ function node.render()
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
     font:write(1780,0,time,font_size,1,1,1,1)
     local offset=0
+    
     for idx=1, #roomlist do
-        write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
-        offset=offset+50
+        
+        local timestamp = {}
+    
+        for t in string.gmatch((roomlist[idx].day .. ".") .. roomlist[idx].time, '%d+') do
+            timestamp[#timestamp+1] = t
+        end
+        
+        local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
+        if ( start_time > (time-15*60) ) then
+            write_line(0,50+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher)
+            offset=offset+50
+        end
     end
-    local day = {}
     
-    --[[for t in string.gmatch((roomlist[1].day .. ".") .. roomlist[1].time, '%d+') do
-        day[#day+1] = t
-    end]]--
     
-    test = (roomlist[1].day .. ".") .. roomlist[1].time
-    font:write(0,1000,"Debug : " .. test,font_size,1,1,1,1)
+    font:write(0,1000,"Debug year: " .. day[1],font_size,1,1,1,1)
 end
