@@ -22,7 +22,7 @@ local Config = (function()
                 day = item.day,
                 time = item.time,
                 course = item.course,
-                tacher = item.teacher
+                teacher = item.teacher
             }
         end
     end)
@@ -49,17 +49,17 @@ local Time = (function()
 end)()
 
 function write_line(x,y,room,day,time,course,teacher)
-    offset_step_length=320
+    offset_step_length=300
     offset_step=0
-    font:write(x+(offset_step_length*(offset_step)),y,room,60,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,room,50,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day,60,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. day,50,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time,60,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. time,50,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course,60,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. course,50,1,1,1,1)
     offset_step = offset_step + 1
-    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,60,1,1,1,1)
+    font:write(x+(offset_step_length*(offset_step)),y,"|" .. teacher,50,1,1,1,1)
 end
 
 function node.render()
