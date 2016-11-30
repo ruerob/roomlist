@@ -4,10 +4,14 @@
         "title": "Einstellungen",
         "type": "section"
     }, {
-        "title": "Zeitzone UTC +",
+        "title": "Zeiteinstellung",
         "name": "timezone",
-        "type": "number",
-        "default": "1"
+        "type": "select",
+        "options": [
+            [1, "Winterzeit"],
+            [2, "Sommerzeit"],
+        ],
+        "default": 1
     }, {
         "title": "Was soll angezeigt werden",
         "type": "section"
