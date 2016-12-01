@@ -119,6 +119,8 @@ function node.render()
     gl.scale(0.9, 0.9)
     gl.translate(960*0.1,540*0.1)
     
+    gl.clear(get_rgba(colors[1]));
+    
     logo:draw(624, 150, 1296, 1062, 0.15);
     
     
