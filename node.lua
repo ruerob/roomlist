@@ -158,6 +158,7 @@ function node.render()
                 end
                 --draw comment line
                 write_comment_line(150+offset, roomlist[idx].comment, colors[4])
+                offset = offset+50
             end
         end
     end
