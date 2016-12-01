@@ -131,9 +131,11 @@ end
 function node.render()
     
     --get roomlist from config
-    local roomlist = Config.get_roomlist()[1]
+    local roomlist = Config.get_roomlist()
     local colors = Config.get_colors()
     local cols = Config.get_col_names()
+    
+    roomlist = roomlist[1]
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
@@ -197,7 +199,9 @@ function node.render()
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
     
-    if #Config.get_roomlist() > 1 then
+    roomlist = Config.get_roomlis()
+    
+    if #roomlist > 1 then
         font:write(0,1040,"(1/2)",40,1,1,1,1);
     end
     
