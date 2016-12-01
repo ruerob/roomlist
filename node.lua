@@ -99,7 +99,7 @@ local Config = (function()
                 course = item.course,
                 teacher = item.teacher,
                 info_only = item.info_only,
-                comment = item.comment
+                comment = item.comment,
                 color_schema = item.color_schema
             }
         end
