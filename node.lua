@@ -142,7 +142,13 @@ function node.render()
     local colors = Config.get_colors()
     local cols = Config.get_col_names()
     
-    roomlist = roomlist[1]
+    local page=1
+    
+    if #roomlist > 1 then
+        page = ((os.time()% (Config.get_page_duration() * #roomlist)) / Config.get_page_duration()) + 1
+    end
+    
+    roomlist = roomlist[page]
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
@@ -206,8 +212,10 @@ function node.render()
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
     
-    --draw page progress
-    progress = (os.time()% Config.get_page_duration())/Config.get_page_duration()
-    white:draw(0,1060,WIDTH*progress,1080)
+    if #Config.get_roomlist() > 1 then
+        --draw page progress
+        progress = (os.time()% Config.get_page_duration())/Config.get_page_duration()
+        white:draw(0,1060,WIDTH*progress,1080)
+    end
     
 end
