@@ -115,6 +115,8 @@ function node.render()
     --clear the screen
     gl.clear(get_rgba(colors[1]))
     
+    logo:draw(624, 150, 1296, 1062, 0.25);
+    
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
     
     --write header
@@ -171,7 +173,6 @@ function node.render()
         --end
     end
     
-    logo:draw(624, 150, 1296, 1062, 0.25);
     
     font:write(0,1000,"test", font_size, 1,1,1,1);
     
