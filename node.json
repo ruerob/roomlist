@@ -163,6 +163,7 @@
             "title": "Farbeschema",
             "name": "color_schema",
             "type": "select",
+            "ui_width": 2,
             "options": [
                 [[0.8,0.8,0.8,1], "Standard"],
                 [[1,0,0,1], "Warnung"],
