@@ -15,7 +15,7 @@ local table_head_color
 local odd_line_color
 local even_line_color
 local white
-local comment_colors = {{r=0.9,g=0.9,b=0.9,a=1}, {r=1,g=0.5,b=0.5,a=1},{r=0.5,g=1,b=0,a=1}}
+local comment_colors = {{r=0.9,g=0.9,b=0.9,a=1}, {r=1,g=0.25,b=0.25,a=1},{r=0.25,g=1,b=0,a=1}}
 
 --returns the rgba values for the color
 function get_rgba(color)
