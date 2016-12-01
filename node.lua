@@ -100,7 +100,7 @@ local Config = (function()
                 teacher = item.teacher,
                 info_only = item.info_only,
                 comment = item.comment,
-                color_schema = {r = item.color_schema.r,g = item.color_schema.g,b = item.color_schema.b,a = item.color_schema.a}
+                color_schema = {r = item.color_schema[1],g = item.color_schema[2],b = item.color_schema[3],a = item.color_schema[4]}
                         
             }
         end
