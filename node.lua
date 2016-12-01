@@ -201,6 +201,6 @@ function node.render()
     
     roomlist = Config.get_roomlist()
     
-    font:write(0,1040,"size: " .. #roomlist,40,1,1,1,1);
+    font:write(0,1040,"size: " .. get_line_count(roomlist[1][1]),40,1,1,1,1);
     
 end
