@@ -15,7 +15,7 @@ local table_head_color
 local odd_line_color
 local even_line_color
 local white
-local comment_colors = {{r=0.9,g=0.9,b=0.9,a=1}, {r=1,g=0,b=0,a=1},{r=0.25,g=1,b=0,a=1}}
+local comment_colors = {{r=0.9,g=0.9,b=0.9,a=1}, {r=1,g=0.5,b=0.5,a=1},{r=0.5,g=1,b=0,a=1}}
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -120,7 +120,7 @@ end)()
 
 --function to write the room line
 function write_line(x,y,room,day,time,course,teacher,color)
-    offset_step_length=300
+    offset_step_length=384
     offset_step=0
     font:write(x+(offset_step_length*(offset_step)),y,room,font_size,get_rgba(color))
     offset_step = offset_step + 1
@@ -164,7 +164,7 @@ function node.render()
     
     --write header
     table_head_color:draw(0, 100, WIDTH, 100+font_size, 1)
-    write_line(0,100,cols[1],cols[2],cols[3],cols[4],cols[5],colors[3])
+    write_line(10,100,cols[1],cols[2],cols[3],cols[4],cols[5],colors[3])
     
     --write time in the upper right corner
     time = os.date("!%d.%m.%Y %H:%M", os.time() + Config.get_timezone()*60*60)
@@ -185,7 +185,7 @@ function node.render()
             end
 
             --write the line
-            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
+            write_line(10,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
             offset=offset+50
         end
 
