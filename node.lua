@@ -199,6 +199,6 @@ function node.render()
     
     if #Config.get_roomlist() > 1 then
         font:write(0,1040,"(1/2)",40,1,1,1,1);
-    end if
+    end
     
 end
