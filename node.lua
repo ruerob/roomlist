@@ -48,7 +48,7 @@ local Config = (function()
         print "updated config.json"
         local config = json.decode(raw)
                 
-        local roomlist = {}
+        roomlist = {}
         
         --filling the variables
         timezone = config.timezone
