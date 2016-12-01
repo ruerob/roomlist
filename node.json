@@ -20,7 +20,7 @@
         "ui_width": 3,
         "default": "Raumplan"
     }, {
-        "title": "Seitenanzeigedauer",
+        "title": "Seitenanzeigedauer (s)",
         "name": "page_duration",
         "type": "integer",
         "ui_width": 3,
