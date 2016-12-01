@@ -142,7 +142,13 @@
             "ui_width": 2,
             "default": "Frau Mustermann"
         },{
-            "title": "Kommentar",
+            "title": "nur Infofeld",
+            "name": "info_only",
+            "type": "boolean",
+            "ui_width": 2,
+            "default": false
+        },{
+            "title": "Infofeld",
             "name": "comment",
             "type": "string",
             "ui_width": 12,

@@ -66,6 +66,7 @@ local Config = (function()
                 time = item.time,
                 course = item.course,
                 teacher = item.teacher,
+                info_only = item.info_only
                 comment = item.comment
             }
         end
@@ -78,6 +79,7 @@ local Config = (function()
         get_header = function() return header end;
         get_colors = function() return colors end;
         get_col_names = function() return col_names end;
+        get_
     }
 end)()
 
@@ -140,17 +142,19 @@ function node.render()
         local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
         
         --draw the line if the room start time wasn't 15 minutes ago
-        if ( start_time > (time-15*60) ) then
+        --if ( start_time > (time-15*60) ) then
             --draw the lines background
-            if (idx%2)==0 then
-                odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
-            else
-                even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+            if roomlist[idx].info_only then
+                if (idx%2)==0 then
+                    odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+                else
+                    even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+                end
+
+                --write the line
+                write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
+                offset=offset+50
             end
-            
-            --write the line
-            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
-            offset=offset+50
             
             --if there is something written in the comment line for a room line
             if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
@@ -164,10 +168,10 @@ function node.render()
                 write_comment_line(150+offset, roomlist[idx].comment, colors[5])
                 offset = offset+50
             end
-        end
+        --end
     end
     
-    logo:draw(20, 12, 74, 88, 1);
+    logo:draw(624, 150, 1296, 1062, 0.25);
     
     font:write(0,1000,"test", font_size, 1,1,1,1);
     
