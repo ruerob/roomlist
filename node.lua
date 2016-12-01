@@ -20,6 +20,7 @@ function get_rgba(color)
     return color.r, color.g, color.b, color.a
 end
 
+--returns the lines needed by an item
 function get_line_count(item)
     local line_count=0
     if not item.info_only then
@@ -74,7 +75,7 @@ local Config = (function()
         for idx = 1, #config.roomlist do
             local item = config.roomlist[idx]
             
-            get_line_count(item)
+            line_count = line_count + get_line_count(item)
             
             if(line_count>18) then
                 page=page+1;
@@ -198,9 +199,5 @@ function node.render()
         odd_line_color:draw(0, 540-font_size/2, WIDTH, 540-font_size/2+font_size, 0.7)
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
-    
-    roomlist = Config.get_roomlist()
-    
-    font:write(0,1040,"size: " .. get_line_count(roomlist[1][1]),40,1,1,1,1);
     
 end
