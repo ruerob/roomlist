@@ -7,10 +7,12 @@ local json = require "json"
 local font = resource.load_font "RobotoMono-Regular.ttf"
 local font_size = 40
 
+--variables for background colors
 local table_head_color
 local odd_line_color
 local even_line_color
 
+--returns the rgba values for the color
 function get_rgba(color)
     return color.r, color.g, color.b, color.a
 end
@@ -38,10 +40,12 @@ local Config = (function()
         colors[4] = config.font_color
         roomlist = {}
                 
+        --filling background colors
         table_head_color = resource.create_colored_texture(get_rgba(config.tableheadbackground_color))
         odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
         even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
         
+        --filling col names
         col_names[1] = config.room_col
         col_names[2] = config.day_col
         col_names[3] = config.time_col
@@ -63,6 +67,7 @@ local Config = (function()
         end
     end)
 
+    --the functions reachable from the outside
     return {
         get_roomlist = function() return roomlist end;
         get_timezone = function() return timezone end;
@@ -72,7 +77,7 @@ local Config = (function()
     }
 end)()
 
---function to write the line for the room
+--function to write the room line
 function write_line(x,y,room,day,time,course,teacher,color)
     offset_step_length=300
     offset_step=0
@@ -85,6 +90,12 @@ function write_line(x,y,room,day,time,course,teacher,color)
     font:write(x+(offset_step_length*(offset_step)),y,course,font_size,get_rgba(color))
     offset_step = offset_step + 1
     font:write(x+(offset_step_length*(offset_step)),y,teacher,font_size,get_rgba(color))
+end
+
+--function to write the comment line for a room entry
+function write_comment_line(y,comment,color)
+    local width = font:width(comment,font_size);
+    font:write(960-width/2,y,comment,font_size, get_rgba(color))
 end
 
 --standard render function used by info-beamer to draw the screen
@@ -126,14 +137,28 @@ function node.render()
         
         --draw the line if the room start time wasn't 15 minutes ago
         if ( start_time > (time-15*60) ) then
+            --draw the lines background
             if (idx%2)==0 then
                 odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
             else
                 even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
             end
             
+            --write the line
             write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
             offset=offset+50
+            
+            --if there is something written in the comment line for a room line
+            if roomlist[idx].comment != "" then
+                --draw background color of the roomline
+                if (idx%2)==0 then
+                    odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+                else
+                    even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
+                end
+                --draw comment line
+                write_comment_line(150+offset, roomlist[idx].comment, colors[4])
+            end
         end
     end
     
