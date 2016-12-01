@@ -9,10 +9,8 @@ local font_size = 40
 
 --load logo image
 local logo = resource.load_image('logo-fsp.png');
-local back_img = resource.load_image('ei.jpg');
 
 --variables for background colors
-local background_color
 local table_head_color
 local odd_line_color
 local even_line_color
@@ -47,7 +45,6 @@ local Config = (function()
         roomlist = {}
                 
         --filling background colors
-        background_color = resource.create_colored_texture(get_rgba(config.background))
         table_head_color = resource.create_colored_texture(get_rgba(config.tableheadbackground_color))
         odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
         even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
@@ -82,6 +79,7 @@ local Config = (function()
         get_header = function() return header end;
         get_colors = function() return colors end;
         get_col_names = function() return col_names end;
+        get_
     }
 end)()
 
@@ -115,15 +113,9 @@ function node.render()
     local cols = Config.get_col_names()
     
     --clear the screen
-    back_img:draw(0,0,1920,1080)
-    
-    gl.scale(0.9, 0.9)
-    gl.translate(960*0.1,540*0.1)
-    
-    background_color:draw(0,0,1920,1080);
+    gl.clear(get_rgba(colors[1]))
     
     logo:draw(624, 150, 1296, 1062, 0.15);
-    
     
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
     
