@@ -152,9 +152,9 @@ function node.render()
             if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
                 --draw background color of the roomline
                 if (idx%2)==0 then
-                    odd_line_color:draw(0, 140+offset, WIDTH, 150+offset+font_size, 1)
+                    odd_line_color:draw(0, 142+offset, WIDTH, 150+offset+font_size, 1)
                 else
-                    even_line_color:draw(0, 140+offset, WIDTH, 150+offset+font_size, 1)
+                    even_line_color:draw(0, 142+offset, WIDTH, 150+offset+font_size, 1)
                 end
                 --draw comment line
                 write_comment_line(150+offset, roomlist[idx].comment, colors[4])
