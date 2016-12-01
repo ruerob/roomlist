@@ -144,7 +144,7 @@ function node.render()
         --draw the line if the room start time wasn't 15 minutes ago
         --if ( start_time > (time-15*60) ) then
             --draw the lines background
-            if ~roomlist[idx].info_only then
+            if not roomlist[idx].info_only then
                 if (idx%2)==0 then
                     odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
                 else
