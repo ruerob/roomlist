@@ -218,7 +218,7 @@ function node.render()
         white:draw(0,1060,WIDTH*progress,1080)
         
         --draw page number
-        font:write(,1020,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
+        font:write(0,1020,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
     end
     
 end
