@@ -53,6 +53,12 @@
         "ui_width": 3,
         "default": [1,1,1,1]
     }, {
+        "title": "Kommentarfarbe",
+        "name": "comment_color",
+        "type": "color",
+        "ui_width": 3,
+        "default": [1,1,1,1]
+    }, {
         "title": "ungerade Zeilen",
         "name": "odd_lines",
         "type": "color",

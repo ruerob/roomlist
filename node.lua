@@ -38,6 +38,7 @@ local Config = (function()
         colors[2] = config.header_color
         colors[3] = config.tablehead_color
         colors[4] = config.font_color
+        colors[5] = config.comment_color
         roomlist = {}
                 
         --filling background colors
@@ -157,7 +158,7 @@ function node.render()
                     even_line_color:draw(0, 142+offset, WIDTH, 150+offset+font_size, 1)
                 end
                 --draw comment line
-                write_comment_line(150+offset, roomlist[idx].comment, colors[4])
+                write_comment_line(150+offset, roomlist[idx].comment, colors[5])
                 offset = offset+50
             end
         end
