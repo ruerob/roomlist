@@ -168,7 +168,7 @@ function node.render()
     end
     
     if #roomlist == 0 then
-        odd_line_color:draw(0, 960-font_size/2, WIDTH, 960-font_size/2+font_size, 0.7)
+        odd_line_color:draw(0, 540-font_size/2, WIDTH, 540-font_size/2+font_size, 0.7)
         write_comment_line(960-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
     
