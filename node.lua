@@ -167,6 +167,8 @@ function node.render()
         end
     end
     
-    logo:draw(40, 14, 90, 86, 1);
+    logo:draw(40, 14, 90, 86);
+    
+    font:write(0,1000,"test", font_size, 1,1,1,1);
     
 end
