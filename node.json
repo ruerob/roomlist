@@ -24,7 +24,7 @@
         "name": "page_duration",
         "type": "integer",
         "ui_width": 3,
-        "default": "15"
+        "default": 15
     }, {
         "title": "Farben",
         "type": "section"
