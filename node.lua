@@ -172,7 +172,7 @@ function node.render()
         end
 
         --if there is something written in the comment line for a room line
-        if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
+        if roomlist[idx].comment ~= '' and roomlist[idx].comment ~= nil then
 
             --setting strarting y of the comment line
             local y = 142+offset
