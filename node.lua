@@ -148,9 +148,9 @@ function node.render()
             --draw the lines background
             if not roomlist[idx].info_only then
                 if (idx%2)==0 then
-                    odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.8)
+                    odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
                 else
-                    even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.8)
+                    even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
                 end
 
                 --write the line
@@ -169,9 +169,9 @@ function node.render()
             
                 --draw background color of the roomline
                 if (idx%2)==0 then
-                    odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.8)
+                    odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
                 else
-                    even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.8)
+                    even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
                 end
                 --draw comment line
                 write_comment_line(150+offset, roomlist[idx].comment, colors[5])
