@@ -8,7 +8,7 @@ local font = resource.load_font "RobotoMono-Regular.ttf"
 local font_size = 40
 
 --load logo image
-local logo = resource.load_image('schule_logo_klein.png');
+local logo = resource.load_image('logo-fsp.png');
 
 --variables for background colors
 local table_head_color
@@ -124,8 +124,8 @@ function node.render()
     write_line(0,100,cols[1],cols[2],cols[3],cols[4],cols[5],colors[3])
     
     --write time in the upper right corner
-    time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)
-    font:write(1780,0,time,font_size,1,1,1,1)
+    time = os.date("!%d.%m.%Y %H:%M", os.time() + Config.get_timezone()*60*60)
+    font:write(1900-font:width(time,font_size),0,time,font_size,1,1,1,1)
     
     --set offset for the first line
     local offset=0
@@ -133,7 +133,7 @@ function node.render()
     --for each room entry
     for idx=1, #roomlist do
         
-        --current time
+        --[[current time
         local time = os.time() + Config.get_timezone()*60*60
         
         --read out the start time for the room
@@ -142,7 +142,7 @@ function node.render()
             timestamp[#timestamp+1] = t
         end
         local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
-        
+        ]]--
         --draw the line if the room start time wasn't 15 minutes ago
         --if ( start_time > (time-15*60) ) then
             --draw the lines background
