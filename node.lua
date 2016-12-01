@@ -3,9 +3,12 @@ gl.setup(1920, 1080)
 
 local json = require "json"
 
--- setting the font
+--setting the font
 local font = resource.load_font "RobotoMono-Regular.ttf"
 local font_size = 40
+
+--load logo image
+local logo = resource.load_image('schule_logo_klein.gif');
 
 --variables for background colors
 local table_head_color
@@ -163,5 +166,7 @@ function node.render()
             end
         end
     end
+    
+    logo:draw(40, 14, 90, 86, 1);
     
 end
