@@ -216,6 +216,9 @@ function node.render()
         --draw page progress
         progress = (os.time()% Config.get_page_duration())/Config.get_page_duration()
         white:draw(0,1060,WIDTH*progress,1080)
+        
+        --draw page number
+        font:write(,1020,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
     end
     
 end
