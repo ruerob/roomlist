@@ -14,6 +14,7 @@ local logo = resource.load_image('logo-fsp.png');
 local table_head_color
 local odd_line_color
 local even_line_color
+local white
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -40,6 +41,7 @@ local Config = (function()
     local col_names = {}
     local timezone
     local header
+    local page_duration
 
     --we watch the config.json file which is created on info-beamer hosting
     util.file_watch("config.json", function(raw)
@@ -49,6 +51,9 @@ local Config = (function()
         --filling the variables
         timezone = config.timezone
         header = config.header
+        page_duration = config.page_duration
+                
+        --filling text colors
         colors[1] = config.background
         colors[2] = config.header_color
         colors[3] = config.tablehead_color
@@ -59,6 +64,7 @@ local Config = (function()
         table_head_color = resource.create_colored_texture(get_rgba(config.tableheadbackground_color))
         odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
         even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
+        white = resource.create_colored_texture(1,1,1,1);
         
         --filling col names
         col_names[1] = config.room_col
@@ -103,7 +109,7 @@ local Config = (function()
         get_header = function() return header end;
         get_colors = function() return colors end;
         get_col_names = function() return col_names end;
-        get_
+        get_page_duration = function() return page_duration end;
     }
 end)()
 
@@ -199,5 +205,9 @@ function node.render()
         odd_line_color:draw(0, 540-font_size/2, WIDTH, 540-font_size/2+font_size, 0.7)
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
+    
+    --draw page progress
+    progress = (os.time()% Config.get_page_duration())/Config.get_page_duration()
+    white:draw(0,1060,WIDTH*progress,1080)
     
 end
