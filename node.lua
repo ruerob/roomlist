@@ -20,6 +20,17 @@ function get_rgba(color)
     return color.r, color.g, color.b, color.a
 end
 
+function get_line_count(item)
+    local line_count=0
+    if not item.info_only then
+        line_count = line_count + 1
+    end
+    if item.comment ~= '' and item.comment ~= nil then
+        line_count = line_count + 1
+    end
+    return line_count
+end
+
 --loading the config
 local Config = (function()
     --needed variables
@@ -42,7 +53,6 @@ local Config = (function()
         colors[3] = config.tablehead_color
         colors[4] = config.font_color
         colors[5] = config.comment_color
-        roomlist = {}
                 
         --filling background colors
         table_head_color = resource.create_colored_texture(get_rgba(config.tableheadbackground_color))
@@ -56,10 +66,23 @@ local Config = (function()
         col_names[4] = config.course_col
         col_names[5] = config.teacher_col
 
+        local page=1
+        local line_count=0
+        roomlist[page] = {}
+                
         --filling the roomlist
         for idx = 1, #config.roomlist do
             local item = config.roomlist[idx]
-            roomlist[#roomlist+1] = {
+            
+            get_line_count(item)
+            
+            if(line_count>18) then
+                page=page+1;
+                line_count=get_line_count(item)
+                roomlist[page] = {}
+            end
+                    
+            roomlist[page][#roomlist[page]+1] = {
                 index = idx,
                 room = item.room,
                 day = item.day,
@@ -108,7 +131,7 @@ end
 function node.render()
     
     --get roomlist from config
-    local roomlist = Config.get_roomlist()
+    local roomlist = Config.get_roomlist()[1]
     local colors = Config.get_colors()
     local cols = Config.get_col_names()
     
@@ -167,7 +190,9 @@ function node.render()
         end
     end
     
+    --if there is no roomlist show a message
     if #roomlist == 0 then
+        --draw background and write line
         odd_line_color:draw(0, 540-font_size/2, WIDTH, 540-font_size/2+font_size, 0.7)
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
