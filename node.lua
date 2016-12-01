@@ -199,7 +199,7 @@ function node.render()
         write_comment_line(540-font_size/2, "Kein Eintrag vorhanden", colors[4])
     end
     
-    roomlist = Config.get_roomlis()
+    roomlist = Config.get_roomlist()
     
     font:write(0,1040,"size: " .. #roomlist,40,1,1,1,1);
     
