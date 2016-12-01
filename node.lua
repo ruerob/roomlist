@@ -114,6 +114,7 @@ function node.render()
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
+    gl.scale(0.75, 0.75)
     
     logo:draw(624, 150, 1296, 1062, 0.15);
     
@@ -133,51 +134,38 @@ function node.render()
     --for each room entry
     for idx=1, #roomlist do
         
-        --[[current time
-        local time = os.time() + Config.get_timezone()*60*60
-        
-        --read out the start time for the room
-        local timestamp = {}
-        for t in string.gmatch((roomlist[idx].day .. ".") .. roomlist[idx].time, '%d+') do
-            timestamp[#timestamp+1] = t
-        end
-        local start_time = os.time({year=tonumber(timestamp[3]), month=tonumber(timestamp[2]), day=tonumber(timestamp[1]), hour=tonumber(timestamp[4]), min=tonumber(timestamp[5])});
-        ]]--
-        --draw the line if the room start time wasn't 15 minutes ago
-        --if ( start_time > (time-15*60) ) then
-            --draw the lines background
-            if not roomlist[idx].info_only then
-                if (idx%2)==0 then
-                    odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
-                else
-                    even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
-                end
+        --draw the lines background
+        if not roomlist[idx].info_only then
+            if (idx%2)==0 then
+                odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
+            else
+                even_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 0.7)
+            end
 
-                --write the line
-                write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
-                offset=offset+50
+            --write the line
+            write_line(0,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
+            offset=offset+50
+        end
+
+        --if there is something written in the comment line for a room line
+        if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
+
+            --setting strarting y of the comment line
+            local y = 142+offset
+            if roomlist[idx].info_only then
+                y=150+offset
             end
-            
-            --if there is something written in the comment line for a room line
-            if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
-                
-                --setting strarting y of the comment line
-                local y = 142+offset
-                if roomlist[idx].info_only then
-                    y=150+offset
-                end
-            
-                --draw background color of the roomline
-                if (idx%2)==0 then
-                    odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
-                else
-                    even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
-                end
-                --draw comment line
-                write_comment_line(150+offset, roomlist[idx].comment, colors[5])
-                offset = offset+50
+
+            --draw background color of the roomline
+            if (idx%2)==0 then
+                odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
+            else
+                even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
-        --end
+            --draw comment line
+            write_comment_line(150+offset, roomlist[idx].comment, colors[5])
+            offset = offset+50
+        end
     end
     
 end
