@@ -201,8 +201,6 @@ function node.render()
     
     roomlist = Config.get_roomlis()
     
-    if #roomlist > 1 then
-        font:write(0,1040,"(1/2)",40,1,1,1,1);
-    end
+    font:write(0,1040,"size: " .. #roomlist,40,1,1,1,1);
     
 end
