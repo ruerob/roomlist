@@ -149,7 +149,7 @@ function node.render()
             offset=offset+50
             
             --if there is something written in the comment line for a room line
-            --if roomlist[idx].comment ~= "" then
+            if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
                 --draw background color of the roomline
                 if (idx%2)==0 then
                     odd_line_color:draw(0, 150+offset, WIDTH, 150+offset+font_size, 1)
@@ -158,10 +158,8 @@ function node.render()
                 end
                 --draw comment line
                 write_comment_line(150+offset, roomlist[idx].comment, colors[4])
-            --end
+            end
         end
     end
     
-    --debugging purposes
-    font:write(0,1000,"Debug: passed without error",font_size,1,1,1,1)
 end
