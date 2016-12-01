@@ -66,7 +66,7 @@ local Config = (function()
                 time = item.time,
                 course = item.course,
                 teacher = item.teacher,
-                info_only = item.info_only
+                info_only = item.info_only,
                 comment = item.comment
             }
         end
