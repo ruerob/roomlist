@@ -95,7 +95,7 @@ end
 --function to write the comment line for a room entry
 function write_comment_line(y,comment,color)
     local width = font:width(comment,font_size);
-    font:write(960-width/2,y,comment,font_size, get_rgba(color))
+    font:write(0,y,comment,font_size, get_rgba(color))
 end
 
 --standard render function used by info-beamer to draw the screen
