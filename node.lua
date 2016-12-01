@@ -145,7 +145,7 @@ function node.render()
     local page=1
     
     if #roomlist > 1 then
-        page = 2
+        page = math.floor(((os.time()% (Config.get_page_duration() * #roomlist)) / Config.get_page_duration()) + 1)
     end
     
     roomlist = roomlist[page]
