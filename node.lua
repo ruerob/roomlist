@@ -100,6 +100,7 @@ local Config = (function()
                 teacher = item.teacher,
                 info_only = item.info_only,
                 comment = item.comment
+                color_schema = item.color_schema
             }
         end
     end)
@@ -202,7 +203,7 @@ function node.render()
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
             --draw comment line
-            write_comment_line(150+offset, roomlist[idx].comment, colors[5])
+            write_comment_line(150+offset, roomlist[idx].comment, roomslist[idx].color_schema)
             offset = offset+50
         end
     end
