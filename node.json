@@ -72,31 +72,31 @@
         "name": "room_col",
         "type": "string",
         "ui_width": 3,
-        "default": "Wo?"
+        "default": "Wo"
     }, {
         "title": "Tagesspalte",
         "name": "day_col",
         "type": "string",
         "ui_width": 3,
-        "default": "Wann?"
+        "default": "Wann"
     }, {
         "title": "Uhrzeitspalte",
         "name": "time_col",
         "type": "string",
         "ui_width": 3,
-        "default": "Welche Zeit?"
+        "default": "Uhrzeit"
     }, {
         "title": "Unterrichhtsspalte",
         "name": "course_col",
         "type": "string",
         "ui_width": 3,
-        "default": "Was?"
+        "default": "Was"
     }, {
         "title": "Lehrerspalte",
         "name": "teacher_col",
         "type": "string",
         "ui_width": 3,
-        "default": "Mit Wem?"
+        "default": "Mit Wem"
     }, {
         "title": "Was soll angezeigt werden",
         "type": "section"
