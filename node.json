@@ -157,8 +157,17 @@
             "title": "Infofeld",
             "name": "comment",
             "type": "string",
-            "ui_width": 12,
+            "ui_width": 10,
             "default": ""
-        }]
+        }, {
+            "title": "Farbeschema",
+            "name": "color_schema",
+            "type": "select",
+            "options": [
+            [[0.8,0.8,0.8,1], "Standard"],
+            [[1,0,0,1], "Warnung"],
+            [[0.2,1,0,1], "Info"]
+        ],
+        "default": [0.8,0.8,0.8,1]
     }]
 }
