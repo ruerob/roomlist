@@ -117,37 +117,37 @@
             "type": "string",
             "ui_width": 2,
             "default": "Raum 01"
-        },{
+        }, {
             "title": "Tag",
             "name": "day",
             "type": "string",
             "ui_width": 2,
             "default": "01.01.2017"
-        },{
+        }, {
             "title": "Uhrzeit",
             "name": "time",
             "type": "string",
             "ui_width": 2,
             "default": "10:30"
-        },{
+        }, {
             "title": "Fach",
             "name": "course",
             "type": "string",
             "ui_width": 2,
             "default": "Mathematik"
-        },{
+        }, {
             "title": "Lehrer",
             "name": "teacher",
             "type": "string",
             "ui_width": 2,
             "default": "Frau Mustermann"
-        },{
+        }, {
             "title": "nur Infofeld",
             "name": "info_only",
             "type": "boolean",
             "ui_width": 2,
             "default": false
-        },{
+        }, {
             "title": "Infofeld",
             "name": "comment",
             "type": "string",
