@@ -165,11 +165,11 @@
             "type": "select",
             "ui_width": 3,
             "options": [
-                [[0.8,0.8,0.8,1], "Standard"],
-                [[1,0,0,1], "Warnung"],
-                [[0.2,1,0,1], "Info"]
+                [1, "Standard"],
+                [2, "Warnung"],
+                [3, "Info"]
             ],
-            "default": [0.8,0.8,0.8,1]
+            "default": 1
         }]
     }]
 }

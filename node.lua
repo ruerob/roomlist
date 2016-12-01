@@ -15,6 +15,7 @@ local table_head_color
 local odd_line_color
 local even_line_color
 local white
+local comment_colors = {{r=0.9,g=0.9,b=0.9,a=1}, {r=1,g=0,b=0,a=1},{r=0.25,g=1,b=0,a=1}}
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -100,7 +101,7 @@ local Config = (function()
                 teacher = item.teacher,
                 info_only = item.info_only,
                 comment = item.comment,
-                color_schema = {r = item.color_schema[1],g = item.color_schema[2],b = item.color_schema[3],a = item.color_schema[4]}
+                color_schema = item.color_schema
                         
             }
         end
@@ -204,7 +205,7 @@ function node.render()
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
             --draw comment line
-            write_comment_line(150+offset, roomlist[idx].comment, roomslist[idx].color_schema)
+            write_comment_line(150+offset, roomlist[idx].comment, comment_colors[roomlist[idx].color_schema])
             offset = offset+50
         end
     end
