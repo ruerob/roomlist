@@ -161,6 +161,10 @@ function node.render()
             --if there is something written in the comment line for a room line
             if roomlist[idx].comment ~= '' and roomlist[idx] ~= nil then
                 --draw background color of the roomline
+                local y = 142+offset
+                if roomlist[idx].info_only then
+                    y=150+offset
+                end
                 if (idx%2)==0 then
                     odd_line_color:draw(0, 142+offset, WIDTH, 150+offset+font_size, 1)
                 else
