@@ -20,6 +20,7 @@ local Config = (function()
     --needed variables
     local roomlist = {}
     local colors = {}
+    local col_names = {}
     local timezone
     local header
 
@@ -41,6 +42,11 @@ local Config = (function()
         odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
         even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
         
+        col_names[1] = config.room_col
+        col_names[2] = config.day_col
+        col_names[3] = config.time_col
+        col_names[4] = config.course_col
+        col_names[5] = config.teacher_col
 
         --filling the roomlist
         for idx = 1, #config.roomlist do
@@ -62,6 +68,7 @@ local Config = (function()
         get_timezone = function() return timezone end;
         get_header = function() return header end;
         get_colors = function() return colors end;
+        get_col_names = function() return col_names end;
     }
 end)()
 
@@ -86,6 +93,7 @@ function node.render()
     --get roomlist from config
     local roomlist = Config.get_roomlist()
     local colors = Config.get_colors()
+    local cols = Config.get_col_names()
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
@@ -94,7 +102,7 @@ function node.render()
     
     --write header
     table_head_color:draw(0, 100, WIDTH, 100+font_size, 1)
-    write_line(0,100,"Raum","Tag","Uhrzeit","Fach","Lehrer",colors[3])
+    write_line(0,100,cols[1],cols[2],cols[3],cols[4],cols[5],colors[3])
     
     --write time in the upper right corner
     time = os.date("!%H:%M", os.time() + Config.get_timezone()*60*60)

@@ -65,6 +65,39 @@
         "ui_width": 3,
         "default": [0.25,0.25,0.25,1]
     }, {
+        "title": "Überschriften",
+        "type": "section"
+    }, {
+        "title": "Raumspalte",
+        "name": "room_col",
+        "type": "string",
+        "ui_width": 3,
+        "default": "Wo?"
+    }, {
+        "title": "Tagesspalte",
+        "name": "day_col",
+        "type": "string",
+        "ui_width": 3,
+        "default": "Wann?"
+    }, {
+        "title": "Uhrzeitspalte",
+        "name": "time_col",
+        "type": "string",
+        "ui_width": 3,
+        "default": "Welche Zeit?"
+    }, {
+        "title": "Unterrichhtsspalte",
+        "name": "course_col",
+        "type": "string",
+        "ui_width": 3,
+        "default": "Was?"
+    }, {
+        "title": "Lehrerspalte",
+        "name": "teacher_col",
+        "type": "string",
+        "ui_width": 3,
+        "default": "Mit Wem?"
+    }, {
         "title": "Was soll angezeigt werden",
         "type": "section"
     }, {
