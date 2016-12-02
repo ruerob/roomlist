@@ -158,7 +158,7 @@ function node.render()
     --clear the screen
     gl.clear(get_rgba(colors[1]))
     if (os.time()%60 > 40) then
-        gl.transform(0,os.time()%20);
+        gl.translate(0,os.time()%20);
     end
     logo:draw(624, 150, 1296, 1062, 0.15);
     
