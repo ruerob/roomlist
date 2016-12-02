@@ -17,6 +17,7 @@ local even_line_color
 local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1},{r=1,g=1,b=1,a=1}}
 local line_height = 55
+local color_blinker = {}
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -68,6 +69,15 @@ local Config = (function()
         odd_line_color = resource.create_colored_texture(get_rgba(config.odd_lines))
         even_line_color = resource.create_colored_texture(get_rgba(config.even_lines))
         white = resource.create_colored_texture(1,1,1,1);
+        color_blinker = {}
+        color_blinker[1] = resource.create_colored_texture(1,1,1,1);
+        color_blinker[2] = resource.create_colored_texture(1,0,0,1);
+        color_blinker[3] = resource.create_colored_texture(1,1,0,1);
+        color_blinker[4] = resource.create_colored_texture(0,1,0,1);
+        color_blinker[5] = resource.create_colored_texture(0,1,1,1);
+        color_blinker[6] = resource.create_colored_texture(0,0,1,1);
+        color_blinker[7] = resource.create_colored_texture(1,0,1,1);
+        color_blinker[8] = resource.create_colored_texture(0,0,0,1);
         
         --filling col names
         col_names[1] = config.room_col
@@ -226,5 +236,7 @@ function node.render()
         --draw page number
         font:write(0,0,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
     end
+    
+    color_blinker[os.time()%8 + 1]:draw(0,0,1920,1080)
     
 end
