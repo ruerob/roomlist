@@ -205,6 +205,7 @@ function node.render()
             else
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
+            font:write(0,0,"test",40,1,1,1,1)
             --draw comment line
             write_comment_line(150+offset, roomlist[idx].comments[idc], comment_colors[roomlist[idx].color_schema])
             offset = offset+line_height
