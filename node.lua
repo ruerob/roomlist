@@ -238,6 +238,6 @@ function node.render()
     end
     
     font:write(0,50,((os.time()%8) + 1),40,1,1,1,1)
-    color_blinker[(os.time()%8) + 1]:draw(0,0,1920,1080)
+    color_blinker[math.floor(os.time()%8) + 1]:draw(0,0,1920,1080)
     
 end
