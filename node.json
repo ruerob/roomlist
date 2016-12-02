@@ -122,31 +122,31 @@
             "name": "col1",
             "type": "string",
             "ui_width": 2,
-            "default": "Raum 01"
+            "default": ""
         }, {
             "title": "Spalte 2",
             "name": "col2",
             "type": "string",
             "ui_width": 2,
-            "default": "01.01.2017"
+            "default": ""
         }, {
             "title": "Spalte 3",
             "name": "col3",
             "type": "string",
             "ui_width": 2,
-            "default": "10:30"
+            "default": ""
         }, {
             "title": "Spalte 4",
             "name": "col4",
             "type": "string",
             "ui_width": 2,
-            "default": "Mathematik"
+            "default": ""
         }, {
             "title": "Spalte 5",
             "name": "col5",
             "type": "string",
             "ui_width": 2,
-            "default": "Frau Mustermann"
+            "default": ""
         }, {
             "title": "nur Infofeld",
             "name": "info_only",
