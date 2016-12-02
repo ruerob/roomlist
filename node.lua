@@ -29,9 +29,9 @@ function get_line_count(item)
     if not item.info_only then
         line_count = line_count + 1
     end
-    if item.comment ~= '' and item.comment ~= nil then
-        line_count = line_count + 1
-    end
+    
+    line_count = line_count + #item.comments
+    
     return line_count
 end
 
@@ -200,9 +200,9 @@ function node.render()
             end
 
             --draw background color of the roomline
-            if (idx%2)==0 then
+            if (idx%2)==0 and not roomlist[idx].info_only then
                 odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
-            else
+            else if (not roomlist[idx].info_only) then
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
             
