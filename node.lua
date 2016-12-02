@@ -18,7 +18,7 @@ local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1},{r=1,g=1,b=1,a=1}}
 local line_height = 55
 local color_blinker = {}
-scale = 1
+scale = 0.5
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -172,9 +172,8 @@ function node.render()
     --scale = scale + (scale/4)
     --if(scale > 64) then scale = 0.01 end
     
-    gl.translate(-980, -540)
     gl.scale(scale,scale)
-    gl.translate(980-(1920*scale), 540-(1080*scale))
+    gl.translate(1920 - 950*scale, 1080- 540*scale)
     --if (os.time()%60 > 40) then
         --gl.scale(1,1-((os.time()%20)/10));
     --end
