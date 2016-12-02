@@ -169,8 +169,8 @@ function node.render()
     --clear the screen
     gl.clear(get_rgba(colors[1]))
     
-    scale = scale + (scale/4)
-    if(scale > 64) then scale = 0.01 end
+    --scale = scale + (scale/4)
+    --if(scale > 64) then scale = 0.01 end
     
     gl.translate(-980, -540)
     gl.scale(scale,scale)
