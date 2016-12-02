@@ -195,7 +195,7 @@ function node.render()
         if roomlist[idx].comment ~= '' and roomlist[idx].comment ~= nil then
 
             --setting strarting y of the comment line
-            local y = 142+offset
+            local y = 141+offset
             if roomlist[idx].info_only then
                 y=150+offset
             end
