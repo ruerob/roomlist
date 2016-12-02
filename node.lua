@@ -4,7 +4,7 @@ gl.setup(1920, 1080)
 local json = require "json"
 
 --setting the font
-local font = resource.load_font "RobotoMono-Regular.ttf"
+local font = resource.load_font "PTM55FT.ttf"
 local font_size = 40
 
 --load logo image
