@@ -18,6 +18,7 @@ local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1},{r=1,g=1,b=1,a=1}}
 local line_height = 55
 local color_blinker = {}
+scale = 1
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -167,6 +168,11 @@ function node.render()
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
+    
+    scale = scale + scale
+    if(scale > 64) then scale = 0.01 end
+    
+    gl.scale(scale,scale)
     --if (os.time()%60 > 40) then
         --gl.scale(1,1-((os.time()%20)/10));
     --end
@@ -236,8 +242,5 @@ function node.render()
         --draw page number
         font:write(0,0,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
     end
-    
-    font:write(0,50,((os.time()%8) + 1),40,1,1,1,1)
-    color_blinker[math.floor(os.time()%8) + 1]:draw(0,0,1920,1080)
     
 end
