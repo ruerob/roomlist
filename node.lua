@@ -94,11 +94,11 @@ local Config = (function()
                     
             roomlist[page][#roomlist[page]+1] = {
                 index = idx,
-                room = item.room,
-                day = item.day,
-                time = item.time,
-                course = item.course,
-                teacher = item.teacher,
+                col1 = item.col1,
+                col2 = item.col2,
+                col3 = item.col3,
+                col4 = item.col4,
+                col5 = item.col5,
                 info_only = item.info_only,
                 comments = item.comments,
                 color_schema = item.color_schema
@@ -187,7 +187,7 @@ function node.render()
             end
 
             --write the line
-            write_line(10,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
+            write_line(10,150+offset,roomlist[idx].col1,roomlist[idx].col2,roomlist[idx].col3,roomlist[idx].col4,roomlist[idx].col5,colors[4])
             offset=offset+line_height
         end
 

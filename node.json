@@ -80,31 +80,31 @@
         "title": "Überschriften",
         "type": "section"
     }, {
-        "title": "Raumspalte",
+        "title": "Spalte 1",
         "name": "room_col",
         "type": "string",
         "ui_width": 3,
         "default": "Wo"
     }, {
-        "title": "Tagesspalte",
+        "title": "Spalte 2",
         "name": "day_col",
         "type": "string",
         "ui_width": 3,
         "default": "Wann"
     }, {
-        "title": "Uhrzeitspalte",
+        "title": "Spalte 3",
         "name": "time_col",
         "type": "string",
         "ui_width": 3,
         "default": "Uhrzeit"
     }, {
-        "title": "Unterrichhtsspalte",
+        "title": "Spalte 4",
         "name": "course_col",
         "type": "string",
         "ui_width": 3,
         "default": "Was"
     }, {
-        "title": "Lehrerspalte",
+        "title": "Spalte 5",
         "name": "teacher_col",
         "type": "string",
         "ui_width": 3,
@@ -118,32 +118,32 @@
         "type": "list",
         "itemname": "Item",
         "items": [{
-            "title": "Raum",
-            "name": "room",
+            "title": "Spalte 1",
+            "name": "col1",
             "type": "string",
             "ui_width": 2,
             "default": "Raum 01"
         }, {
-            "title": "Tag",
-            "name": "day",
+            "title": "Spalte 2",
+            "name": "col2",
             "type": "string",
             "ui_width": 2,
             "default": "01.01.2017"
         }, {
-            "title": "Uhrzeit",
-            "name": "time",
+            "title": "Spalte 3",
+            "name": "col3",
             "type": "string",
             "ui_width": 2,
             "default": "10:30"
         }, {
-            "title": "Fach",
-            "name": "course",
+            "title": "Spalte 4",
+            "name": "col4",
             "type": "string",
             "ui_width": 2,
             "default": "Mathematik"
         }, {
-            "title": "Lehrer",
-            "name": "teacher",
+            "title": "Spalte 5",
+            "name": "col5",
             "type": "string",
             "ui_width": 2,
             "default": "Frau Mustermann"
@@ -160,7 +160,7 @@
             "itemname": "Item",
             "ui_width": 9,
             "items": [{
-                "title": "Infofeld",
+                "title": "Infofeldzeile",
                 "name": "comment",
                 "type": "string",
                 "default":""
