@@ -87,7 +87,7 @@ local Config = (function()
             
             line_count = line_count + get_line_count(item)
             
-            if(line_count>18) then
+            if((line_count * line_height + 150)>1050) then
                 page=page+1;
                 line_count=get_line_count(item)
                 roomlist[page] = {}
@@ -196,7 +196,7 @@ function node.render()
         if roomlist[idx].comment ~= '' and roomlist[idx].comment ~= nil then
 
             --setting strarting y of the comment line
-            local y = 136+offset
+            local y = 150+offset - (line_height - font_size)
             if roomlist[idx].info_only then
                 y=150+offset
             end
