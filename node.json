@@ -155,10 +155,16 @@
             "default": false
         }, {
             "title": "Infofeld",
-            "name": "comment",
-            "type": "string",
+            "name": "comments",
+            "type": "list",
+            "itemname": "Item",
             "ui_width": 9,
-            "default": ""
+            "items": [{
+                "title": "Infofeld",
+                "name": "comment",
+                "type": "string",
+                "default":""
+            }]
         }, {
             "title": "Farbeschema",
             "name": "color_schema",
