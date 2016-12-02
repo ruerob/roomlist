@@ -18,7 +18,7 @@ local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1},{r=1,g=1,b=1,a=1}}
 local line_height = 55
 local color_blinker = {}
-scale = 2
+scale = 1
 
 --returns the rgba values for the color
 function get_rgba(color)
