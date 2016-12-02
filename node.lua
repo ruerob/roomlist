@@ -237,6 +237,6 @@ function node.render()
         font:write(0,0,"(" .. page .. "/" .. #Config.get_roomlist() .. ")",font_size,1,1,1,1)
     end
     
-    color_blinker[os.time()%8 + 1]:draw(0,0,1920,1080)
+    color_blinker[(os.time()%8) + 1]:draw(0,0,1920,1080)
     
 end
