@@ -16,6 +16,7 @@ local odd_line_color
 local even_line_color
 local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1}}
+local line_height = 55
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -188,14 +189,14 @@ function node.render()
 
             --write the line
             write_line(10,150+offset,roomlist[idx].room,roomlist[idx].day,roomlist[idx].time,roomlist[idx].course,roomlist[idx].teacher,colors[4])
-            offset=offset+50
+            offset=offset+line_height
         end
 
         --if there is something written in the comment line for a room line
         if roomlist[idx].comment ~= '' and roomlist[idx].comment ~= nil then
 
             --setting strarting y of the comment line
-            local y = 141+offset
+            local y = 136+offset
             if roomlist[idx].info_only then
                 y=150+offset
             end
@@ -208,7 +209,7 @@ function node.render()
             end
             --draw comment line
             write_comment_line(150+offset, roomlist[idx].comment, comment_colors[roomlist[idx].color_schema])
-            offset = offset+50
+            offset = offset+line_height
         end
     end
     
