@@ -101,7 +101,7 @@ local Config = (function()
                 course = item.course,
                 teacher = item.teacher,
                 info_only = item.info_only,
-                comment = item.comment,
+                comments = item.comments,
                 color_schema = item.color_schema
                         
             }
@@ -192,12 +192,10 @@ function node.render()
             offset=offset+line_height
         end
 
-        --if there is something written in the comment line for a room line
-        if roomlist[idx].comment ~= '' and roomlist[idx].comment ~= nil then
-
+        for idc=1, #roomlist[idx].comments do
             --setting strarting y of the comment line
             local y = 150+offset - (line_height - font_size)
-            if roomlist[idx].info_only then
+            if (roomlist[idx].info_only and idc==1) then
                 y=150+offset
             end
 
@@ -208,7 +206,7 @@ function node.render()
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
             --draw comment line
-            write_comment_line(150+offset, roomlist[idx].comment, comment_colors[roomlist[idx].color_schema])
+            write_comment_line(150+offset, roomlist[idx].comments[idc], comment_colors[roomlist[idx].color_schema])
             offset = offset+line_height
         end
     end
