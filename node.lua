@@ -31,7 +31,6 @@ function get_line_count(item)
     end
     
     line_count = line_count + #item.comments
-    
     return line_count
 end
 
