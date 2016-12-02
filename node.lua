@@ -173,7 +173,7 @@ function node.render()
     --if(scale > 64) then scale = 0.01 end
     
     gl.scale(scale,scale)
-    gl.translate(-1920, 0)
+    gl.translate(0, 0)
     --if (os.time()%60 > 40) then
         --gl.scale(1,1-((os.time()%20)/10));
     --end
