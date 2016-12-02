@@ -201,7 +201,7 @@ function node.render()
             --draw background color of the roomline
             if (idx%2)==0 and not roomlist[idx].info_only then
                 odd_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
-            else if (not roomlist[idx].info_only) then
+            elseif (not roomlist[idx].info_only) then
                 even_line_color:draw(0, y, WIDTH, 150+offset+font_size, 0.7)
             end
             
