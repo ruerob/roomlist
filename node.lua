@@ -157,9 +157,9 @@ function node.render()
     
     --clear the screen
     gl.clear(get_rgba(colors[1]))
-    if (os.time()%60 > 40) then
-        gl.scale(0,1-((os.time()%20)/10));
-    end
+    --if (os.time()%60 > 40) then
+        gl.scale(1,1-((os.time()%20)/10));
+    --end
     logo:draw(624, 150, 1296, 1062, 0.15);
     
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
