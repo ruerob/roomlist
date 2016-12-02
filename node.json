@@ -173,7 +173,8 @@
             "options": [
                 [1, "Standard"],
                 [2, "Warnung"],
-                [3, "Info"]
+                [3, "Info"],
+                [4, "Weis"]
             ],
             "default": 1
         }]
