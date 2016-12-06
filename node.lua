@@ -171,7 +171,7 @@ function node.render()
     
     if ((os.time()%10) > 7) then
         if ((os.time()%10)>8) then
-            scale = ((os.time()%10)-8)*1)
+            scale = ((os.time()%10)-8)*1
         else
             scale = ((os.time()%10)-7)*32
         end
