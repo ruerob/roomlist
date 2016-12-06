@@ -174,11 +174,11 @@ function node.render()
     
     gl.translate((1920-1920*scale)/2, (1080-1080*scale)/2)
    
-    if (os.time()%10 > 7) then
-        if (os.time()%10>8) then
-            gl.scale(os.time()%10-8*32,os.time()%10-8*1)
+    if ((os.time()%10) > 7) then
+        if ((os.time()%10)>8) then
+            gl.scale(((os.time()%10)-8)*1,((os.time()%10)-8)*1)
         else
-            gl.scale(os.time()%10-8*32,os.time()%10-8*32)
+            gl.scale(((os.time()%10)-8)*32,((os.time()%10)-8)*32)
         end
     else
         gl.scale(1,1)
