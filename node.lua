@@ -18,7 +18,7 @@ local white
 local comment_colors = {{r=0.6,g=0.6,b=0.6,a=1}, {r=1,g=0.45,b=0.45,a=1},{r=0.25,g=1,b=0,a=1},{r=1,g=1,b=1,a=1}}
 local line_height = 55
 local color_blinker = {}
-scale = 1
+scale = 0.01
 
 --returns the rgba values for the color
 function get_rgba(color)
@@ -174,9 +174,11 @@ function node.render()
     
     gl.translate((1920-1920*scale)/2, (1080-1080*scale)/2)
     gl.scale(scale,scale)
+   
     --if (os.time()%60 > 40) then
         --gl.scale(1,1-((os.time()%20)/10));
     --end
+    
     logo:draw(624, 150, 1296, 1062, 0.15);
     
     font:write(960-(font:width(Config.get_header(),80)/2),0,Config.get_header(),80,get_rgba(colors[2]))
