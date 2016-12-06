@@ -169,11 +169,11 @@ function node.render()
     --clear the screen
     gl.clear(get_rgba(colors[1]))
     
-    if ((os.time()%10) > 7) then
-        if ((os.time()%10)>8) then
-            scale = ((os.time()%10)-8)*1
+    if ((os.time()%10) > 8) then
+        if ((os.time()%10)>9) then
+            scale = ((os.time()%10)-9)*1
         else
-            scale = ((os.time()%10)-7)*32
+            scale = ((os.time()%10)-8)*32
         end
     else
         scale=1
