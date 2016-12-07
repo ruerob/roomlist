@@ -39,43 +39,43 @@
         "name": "header_color",
         "type": "color",
         "ui_width": 3,
-        "default": [1,1,1,1]
+        "default": [0.94,0.94,0.94,1]
     }, {
         "title": "Tabellenkopftextfarbe",
         "name": "tablehead_color",
         "type": "color",
         "ui_width": 3,
-        "default": [1,1,1,1]
+        "default": [0,0,0,1]
     }, {
         "title": "Tabellenkopfhintergrundfarbe",
         "name": "tableheadbackground_color",
         "type": "color",
         "ui_width": 3,
-        "default": [1,1,1,1]
+        "default": [0.36,0.83,0.1,1]
     }, {
         "title": "Textfarbe",
         "name": "font_color",
         "type": "color",
         "ui_width": 3,
-        "default": [1,1,1,1]
+        "default": [0.93,0.93,0.93,1]
     }, {
         "title": "Kommentarfarbe",
         "name": "comment_color",
         "type": "color",
         "ui_width": 3,
-        "default": [1,1,1,1]
+        "default": [0.6,0.6,0.6,1]
     }, {
         "title": "ungerade Zeilen",
         "name": "odd_lines",
         "type": "color",
         "ui_width": 3,
-        "default": [0.5,0.5,0.5,1]
+        "default": [0.4,0.4,0.4,1]
     }, {
         "title": "gerade Zeilen",
         "name": "even_lines",
         "type": "color",
         "ui_width": 3,
-        "default": [0.25,0.25,0.25,1]
+        "default": [0.27,0.27,0.27,1]
     }, {
         "title": "Überschriften",
         "type": "section"
