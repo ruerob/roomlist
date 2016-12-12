@@ -154,7 +154,7 @@
             "default": ""
         }, {
             "title": "nur Infofeld",
-            "hint": "Ist das Häkchen gesetzt, Werden die Spalten nicht angezeigt",
+            "hint": "Ist das Häkchen gesetzt, werden nur die Infozeilen angezeigt.",
             "name": "info_only",
             "type": "boolean",
             "ui_width": 2,
