@@ -119,36 +119,42 @@
         "itemname": "Item",
         "items": [{
             "title": "Spalte 1",
+            "hint": "Wo",
             "name": "col1",
             "type": "string",
             "ui_width": 2,
             "default": ""
         }, {
             "title": "Spalte 2",
+            "hint": "Wann",
             "name": "col2",
             "type": "string",
             "ui_width": 2,
             "default": ""
         }, {
             "title": "Spalte 3",
+            "hint": "Uhrzeit",
             "name": "col3",
             "type": "string",
             "ui_width": 2,
             "default": ""
         }, {
             "title": "Spalte 4",
+            "hint": "Was",
             "name": "col4",
             "type": "string",
             "ui_width": 2,
             "default": ""
         }, {
             "title": "Spalte 5",
+            "hint": "Wer",
             "name": "col5",
             "type": "string",
             "ui_width": 2,
             "default": ""
         }, {
             "title": "nur Infofeld",
+            "hint": "Ist das Häkchen gesetzt, Werden die Spalten nicht angezeigt",
             "name": "info_only",
             "type": "boolean",
             "ui_width": 2,
